@@ -14,13 +14,12 @@ import (
 func parseFile(fileName string) {
 	file, err := os.Open(fileName)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err) // Log and exit
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		line := strings.Trim(scanner.Text(), " ")
-		line = strings.Trim(strings.Split(line, com)[0], " \t\n")
+		line := strings.Trim(strings.Split(scanner.Text(), com)[0], " \t\n")
 		if line == "" {
 			continue
 		}
@@ -56,17 +55,17 @@ func initAllFacts() {
 	copy(env.allFacts, env.initialFacts)
 
 	// list from query facts
-	for _, fact := range env.queries {
-		if !stringInSlice(fact, env.allFacts) {
-			env.allFacts = append(env.allFacts, fact)
+	for _, query := range env.queries {
+		if !stringInSlice(query, env.allFacts) {
+			env.allFacts = append(env.allFacts, query)
 		}
 	}
 
 	// list from statement facts
-	for _, statement := range env.rules {
-		for _, stmt := range statement {
-			if !stringInSlice(string(stmt), env.allFacts) && stringInSlice(string(stmt), strings.Split(factSymbol, "")) {
-				env.allFacts = append(env.allFacts, string(stmt))
+	for _, rule := range env.rules {
+		for _, token := range rule {
+			if !stringInSlice(string(token), env.allFacts) && stringInSlice(string(token), strings.Split(factSymbol, "")) {
+				env.allFacts = append(env.allFacts, string(token))
 			}
 		}
 	}
