@@ -83,7 +83,7 @@ func parseDynamic() {
 		line = scanner.Text()
 		if line == "exit" {
 			os.Exit(0)
-		} else if line == "run" {
+		} else if line == "run" && len(env.rules) > 0 && len(env.queries) > 0 && len(env.initialFacts) > 0 {
 			break
 		}
 		line = strings.Trim(strings.Split(strings.Trim(line, " "), com)[0], " \t\n")
@@ -97,6 +97,9 @@ func parseDynamic() {
 		} else {
 			env.rules = append(env.rules, line)
 		}
+	}
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
 	}
 	initAllFacts()
 	buildTree()
