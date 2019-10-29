@@ -7,7 +7,6 @@ const (
 	and         string = "+"
 	or          string = "|"
 	xor         string = "^"
-	operators   string = and + or + xor + not
 	imp         string = "=>"
 	ioi         string = "<=>"
 	com         string = "#"
