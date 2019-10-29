@@ -13,7 +13,6 @@ import (
  */
 func parseFile(fileName string) {
 	var line string
-	var rules, query, initial = false, false, false
 
 	file, err := os.Open(fileName)
 	if err != nil {
@@ -24,39 +23,18 @@ func parseFile(fileName string) {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line = scanner.Text()
-
-		line = strings.Split(line, com)[0]
-		line = strings.Replace(line, " ", "", -1)
-		line = strings.Replace(line, "\t", "", -1)
-
-		if !lexer(line) {
-			os.Exit(1)
-		}
-		if line == "" {
-			continue
-		}
-		if strings.HasPrefix(line, factDeclar) {
-			env.initialFacts = strings.Split(strings.TrimPrefix(line, factDeclar), "")
-			initial = true
-		} else if strings.HasPrefix(line, queryDeclar) {
-			env.queries = strings.Split(strings.TrimPrefix(line, queryDeclar), "")
-			query = true
-		} else {
-			env.rules = append(env.rules, line)
-			rules = true
-		}
+		parseLine(line)
 	}
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 		os.Exit(1)
 	}
-	if !(rules && query && initial) {
+	if !(env.initialFacts != nil && env.queries != nil && env.rules != nil) {
 		log.Fatal("Incomplete data from file.\n")
 		os.Exit(1)
 	}
 	initAllFacts()
 	buildTree()
-
 }
 
 /*
@@ -64,7 +42,6 @@ func parseFile(fileName string) {
  */
 func parseDynamic() {
 	var line string
-	var rules, query, initial = false, false, false
 
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Printf("Using dynamic mode. \nPlease write the rules followed by initial facts then your query.\nType 'exit' to stop.\nType 'run' to run inference engine.\n")
@@ -72,42 +49,41 @@ func parseDynamic() {
 		line = scanner.Text()
 		if line == "exit" {
 			os.Exit(0)
-		} else if (rules && query && initial) || line == "run" {
+		} else if (env.initialFacts != nil && env.queries != nil && env.rules != nil) || line == "run" {
 			break
 		}
-
-		line = strings.Split(line, com)[0]
-		line = strings.Replace(line, " ", "", -1)
-		line = strings.Replace(line, "\t", "", -1)
-
-		if !lexer(line) {
-			os.Exit(1)
-		}
-		if line == "" {
-			continue
-		}
-		if strings.HasPrefix(line, factDeclar) {
-			env.initialFacts = strings.Split(strings.TrimPrefix(line, factDeclar), "")
-			initial = true
-		} else if strings.HasPrefix(line, queryDeclar) {
-			env.queries = strings.Split(strings.TrimPrefix(line, queryDeclar), "")
-			query = true
-		} else {
-			env.rules = append(env.rules, line)
-			rules = true
-		}
+		parseLine(line)
 	}
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 		os.Exit(1)
 	}
-	if !(rules && query && initial) {
+	if !(env.initialFacts != nil && env.queries != nil && env.rules != nil) {
 		log.Fatal("Incomplete data from input.\n")
 		os.Exit(1)
 	}
 	initAllFacts()
 	buildTree()
+}
 
+func parseLine(line string) {
+	line = strings.Split(line, com)[0]
+	line = strings.Replace(line, " ", "", -1)
+	line = strings.Replace(line, "\t", "", -1)
+
+	lexer(line)
+
+	if line == "" {
+		return
+	}
+
+	if strings.HasPrefix(line, factDeclar) {
+		env.initialFacts = strings.Split(strings.TrimPrefix(line, factDeclar), "")
+	} else if strings.HasPrefix(line, queryDeclar) {
+		env.queries = strings.Split(strings.TrimPrefix(line, queryDeclar), "")
+	} else {
+		env.rules = append(env.rules, line)
+	}
 }
 
 /*
