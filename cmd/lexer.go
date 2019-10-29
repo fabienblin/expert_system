@@ -59,11 +59,26 @@ func ruleLexer(line string) bool {
 		}
 	}
 
+	// Check brackets
+	var bracketCount = 0
+	for _, c := range line {
+		if string(c) == openBra {
+			bracketCount++
+		}
+		if string(c) == closeBra {
+			bracketCount--
+		}
+	}
+	if bracketCount != 0 {
+		fmt.Printf("Syntax error on brackets.\n")
+		return false
+	}
+
 	// Check rule is divided left and right for imp and ioi symbols
 	splitImp := strings.Split(line, imp)
 	splitIoi := strings.Split(line, ioi)
 	if len(splitImp) != 2 && len(splitIoi) != 2 {
-		fmt.Printf("Rule doesn't respect synthax around => or <=> symbol.\n")
+		fmt.Printf("Rule doesn't respect syntax around => or <=> symbol.\n")
 		return false
 	}
 
@@ -76,7 +91,7 @@ func ruleLexer(line string) bool {
 		}
 
 		// for close bracket
-		if string(line[i]) == closeBra && !charInString(rune(line[i+1]), not+and+or+xor+imp+ioi+factSymbol) {
+		if string(line[i]) == closeBra && !charInString(rune(line[i+1]), and+or+xor+imp+ioi) {
 			fmt.Printf("Rule contains illegal character '%c' after '%c'.\n", line[i+1], line[i])
 			return false
 		}
@@ -109,5 +124,6 @@ func ruleLexer(line string) bool {
 			return false
 		}
 	}
+
 	return true
 }

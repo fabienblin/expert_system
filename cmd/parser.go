@@ -24,9 +24,11 @@ func parseFile(fileName string) {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line = scanner.Text()
-		line = strings.Trim(strings.Split(strings.Trim(line, " "), com)[0], " \t\n")
+
+		line = strings.Split(line, com)[0]
 		line = strings.Replace(line, " ", "", -1)
 		line = strings.Replace(line, "\t", "", -1)
+
 		if !lexer(line) {
 			os.Exit(1)
 		}
@@ -54,14 +56,7 @@ func parseFile(fileName string) {
 	}
 	initAllFacts()
 	buildTree()
-	fmt.Printf("rules : %q\n", env.rules)
-	fmt.Printf("initialFacts : %q\n", env.initialFacts)
-	fmt.Printf("queries : %q\n", env.queries)
-	fmt.Printf("allFacts : %q\n", env.allFacts)
-	for _, tree := range env.trees {
-		fmt.Printf("\nROOT : \n----------------------------\n")
-		printNode(&tree, 4)
-	}
+
 }
 
 /*
@@ -80,9 +75,11 @@ func parseDynamic() {
 		} else if (rules && query && initial) || line == "run" {
 			break
 		}
-		line = strings.Trim(strings.Split(strings.Trim(line, " "), com)[0], " \t\n")
+
+		line = strings.Split(line, com)[0]
 		line = strings.Replace(line, " ", "", -1)
 		line = strings.Replace(line, "\t", "", -1)
+
 		if !lexer(line) {
 			os.Exit(1)
 		}
@@ -110,14 +107,7 @@ func parseDynamic() {
 	}
 	initAllFacts()
 	buildTree()
-	fmt.Printf("rules : %q\n", env.rules)
-	fmt.Printf("initialFacts : %q\n", env.initialFacts)
-	fmt.Printf("queries : %q\n", env.queries)
-	fmt.Printf("allFacts : %q\n", env.allFacts)
-	for _, tree := range env.trees {
-		fmt.Printf("\nROOT : \n----------------------------\n")
-		printNode(&tree, 4)
-	}
+
 }
 
 /*
