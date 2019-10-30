@@ -23,29 +23,34 @@ SRC_FILES = engine.go \
 			infTree.go \
 			utils.go
 
-.PHONY: build get install run watch start stop restart fclean
+.PHONY: all get install run fclean
 
 
 GOPATH = $(shell pwd)
 GOBIN = $(GOPATH)/bin
+GOENV = GOPATH=$(GOPATH) GOBIN=$(GOBIN)  
 GOFILES = $(wildcard cmd/*.go)
 GONAME = expert_system
+EXECPATH = ./bin/$(GONAME)
 TEST_FILE = example_input.txt
 
-all:
-	@echo "Building $(GOFILES) to ./bin"
-	GOPATH=$(GOPATH) GOBIN=$(GOBIN) go build -o bin/$(GONAME) $(GOFILES)
+all: $(EXECPATH)
+
+$(EXECPATH): $(GOFILES)
+	@printf "0️⃣  Building $(GOFILES) to ./bin \n"
+	@$(GOENV) go build -o $(EXECPATH) $(GOFILES)
+	@printf "✅  Builded! ✅\n"
 
 get:
-	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get .
+	@$(GOENV) go get .
 
 install:
-	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go install $(GOFILES)
+	@$(GOENV) go install $(GOFILES) 
 
 run: all
-	@./bin/$(GONAME) ./examples/$(TEST_FILE)
+	@$(EXECPATH) ./examples/$(TEST_FILE)
 
-fclean:
+fclean:s
 	@echo "Cleaning"
-	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go clean
+	@$(GOENV) go clean
 	@rm -rf ./bin/
