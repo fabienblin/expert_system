@@ -15,7 +15,33 @@ or dynamically :
 
 ./expert_system
 
-## Authors
+## input
+
+### rules
+
+and : +
+
+or : |
+
+xor : ^
+
+not : !
+
+implies : =>
+
+if only if : <=>
+
+facts : [A-Z]
+
+### initial facts
+
+=[A-Z]
+
+### query
+
+?[A-Z]
+
+# Authors
 
 * **Fabien Blin** @ 42 Lyon
 * **Kevin Azoulay** @ 42 Lyon
