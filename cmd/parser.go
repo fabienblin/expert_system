@@ -12,6 +12,8 @@ import (
  * Parse file and initialize the env global variable
  */
 func parseFile(fileName string) {
+	var line string
+
 	file, err := os.Open(fileName)
 	if err != nil {
 		log.Fatal(err) // Log and exit
@@ -19,56 +21,19 @@ func parseFile(fileName string) {
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		line := strings.Trim(strings.Split(scanner.Text(), com)[0], " \t\n")
-		if line == "" {
-			continue
-		}
-		if strings.HasPrefix(line, factDeclar) {
-			env.initialFacts = strings.Split(strings.TrimPrefix(line, factDeclar), "")
-		} else if strings.HasPrefix(line, queryDeclar) {
-			env.queries = strings.Split(strings.TrimPrefix(line, queryDeclar), "")
-		} else {
-			env.rules = append(env.rules, line)
-		}
+		line = scanner.Text()
+		parseLine(line)
 	}
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
+		os.Exit(1)
+	}
+	if !(env.initialFacts != nil && env.queries != nil && env.rules != nil) {
+		log.Fatal("Incomplete data from file.\n")
+		os.Exit(1)
 	}
 	initAllFacts()
 	buildTree()
-	fmt.Printf("rules : %q\n", env.rules)
-	fmt.Printf("initialFacts : %q\n", env.initialFacts)
-	fmt.Printf("queries : %q\n", env.queries)
-	fmt.Printf("allFacts : %q\n", env.allFacts)
-	for _, tree := range env.trees {
-		fmt.Printf("\nROOT : \n----------------------------\n")
-		printNode(&tree, 4)
-	}
-}
-
-/*
- * Initialize env.allFacts all mentioned facts from file statements
- */
-func initAllFacts() {
-	// list from initial facts
-	env.allFacts = make([]string, len(env.initialFacts))
-	copy(env.allFacts, env.initialFacts)
-
-	// list from query facts
-	for _, query := range env.queries {
-		if !stringInSlice(query, env.allFacts) {
-			env.allFacts = append(env.allFacts, query)
-		}
-	}
-
-	// list from statement facts
-	for _, rule := range env.rules {
-		for _, token := range rule {
-			if !stringInSlice(string(token), env.allFacts) && stringInSlice(string(token), strings.Split(factSymbol, "")) {
-				env.allFacts = append(env.allFacts, string(token))
-			}
-		}
-	}
 }
 
 /*
@@ -76,35 +41,78 @@ func initAllFacts() {
  */
 func parseDynamic() {
 	var line string
+
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Printf("Using dynamic mode. \nPlease write the rules followed by initial facts then your query.\nType 'exit' to stop.\nType 'run' to run inference engine.\n")
 	for scanner.Scan() {
 		line = scanner.Text()
 		if line == "exit" {
 			os.Exit(0)
-		} else if line == "run" {
+		} else if (env.initialFacts != nil && env.queries != nil && env.rules != nil) || line == "run" {
 			break
 		}
-		line = strings.Trim(strings.Split(strings.Trim(line, " "), com)[0], " \t\n")
-		if line == "" {
-			continue
-		}
-		if strings.HasPrefix(line, factDeclar) {
-			env.initialFacts = strings.Split(strings.TrimPrefix(line, factDeclar), "")
-		} else if strings.HasPrefix(line, queryDeclar) {
-			env.queries = strings.Split(strings.TrimPrefix(line, queryDeclar), "")
-		} else {
-			env.rules = append(env.rules, line)
-		}
+		parseLine(line)
+	}
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+		os.Exit(1)
+	}
+	if !(env.initialFacts != nil && env.queries != nil && env.rules != nil) {
+		log.Fatal("Incomplete data from input.\n")
+		os.Exit(1)
 	}
 	initAllFacts()
 	buildTree()
-	fmt.Printf("rules : %q\n", env.rules)
-	fmt.Printf("initialFacts : %q\n", env.initialFacts)
-	fmt.Printf("queries : %q\n", env.queries)
-	fmt.Printf("allFacts : %q\n", env.allFacts)
-	for _, tree := range env.trees {
-		fmt.Printf("\nROOT : \n----------------------------\n")
-		printNode(&tree, 4)
+}
+
+/*
+ * Parse and lex any line
+ */
+func parseLine(line string) {
+	line = strings.Split(line, com)[0]
+	line = strings.Replace(line, " ", "", -1)
+	line = strings.Replace(line, "\t", "", -1)
+
+	// lex
+	lexer(line)
+
+	if line == "" {
+		return
+	}
+
+	// parse
+	if strings.HasPrefix(line, factDeclar) {
+		env.initialFacts = strings.Split(strings.TrimPrefix(line, factDeclar), "")
+	} else if strings.HasPrefix(line, queryDeclar) {
+		env.queries = strings.Split(strings.TrimPrefix(line, queryDeclar), "")
+	} else {
+		env.rules = append(env.rules, line)
+	}
+}
+
+/*
+ * Initialize env.allFacts from all mentioned facts
+ */
+func initAllFacts() {
+
+	env.allFacts = make(map[string]int)
+
+	// list from query facts
+	for _, f := range env.queries {
+		env.allFacts[f] = unknownF
+	}
+
+	// list from statement facts
+	for _, rule := range env.rules {
+		for _, f := range rule {
+			if charInString(f, factSymbol) {
+				env.allFacts[string(f)] = unknownF
+			}
+		}
+	}
+
+	// list from initial facts
+	for _, f := range env.initialFacts {
+		env.allFacts[f] = trueF
 	}
 }

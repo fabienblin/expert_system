@@ -16,7 +16,6 @@ func newInfTree() *infTree {
 	t.operator = ""
 	t.precedence = 10
 	t.right = nil
-	t.isTrue = falseF
 	return &t
 }
 
@@ -51,7 +50,6 @@ func buildTree() {
 		root.operator = openBra
 		var current = root
 		for i := 0; i < len(rule); i++ {
-
 			if rule[i] != ' ' && rule[i] != '\t' {
 				if i+3 < len(rule) && rule[i:i+3] == ioi {
 					current = build(root, current, ioi)
@@ -108,7 +106,6 @@ func build(root *infTree, current *infTree, c string) *infTree {
 		node.precedence = factPre
 		node.operator = c
 		if stringInSlice(c, env.initialFacts) {
-			node.isTrue = trueF
 		}
 	} else {
 		fmt.Printf("bug parse : '%s'\n", c)

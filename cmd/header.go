@@ -7,7 +7,6 @@ const (
 	and         string = "+"
 	or          string = "|"
 	xor         string = "^"
-	operators   string = and + or + xor + not
 	imp         string = "=>"
 	ioi         string = "<=>"
 	com         string = "#"
@@ -47,13 +46,12 @@ type infTree struct {
 	right      *infTree
 	operator   string
 	precedence precedence
-	isTrue     int
 }
 
 var env struct {
 	rules        []string
 	initialFacts []string
 	queries      []string
-	allFacts     []string
+	allFacts     map[string]int
 	trees        []infTree
 }
