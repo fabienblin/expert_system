@@ -46,13 +46,12 @@ type infTree struct {
 	right      *infTree
 	operator   string
 	precedence precedence
-	isTrue     int
 }
 
 var env struct {
 	rules        []string
 	initialFacts []string
 	queries      []string
-	allFacts     []string
+	allFacts     map[string]int
 	trees        []infTree
 }

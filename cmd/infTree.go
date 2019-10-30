@@ -16,7 +16,6 @@ func newInfTree() *infTree {
 	t.operator = ""
 	t.precedence = 10
 	t.right = nil
-	t.isTrue = unknownF
 	return &t
 }
 
@@ -107,7 +106,6 @@ func build(root *infTree, current *infTree, c string) *infTree {
 		node.precedence = factPre
 		node.operator = c
 		if stringInSlice(c, env.initialFacts) {
-			node.isTrue = trueF
 		}
 	} else {
 		fmt.Printf("bug parse : '%s'\n", c)

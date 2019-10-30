@@ -66,17 +66,22 @@ func parseDynamic() {
 	buildTree()
 }
 
+/*
+ * Parse and lex any line
+ */
 func parseLine(line string) {
 	line = strings.Split(line, com)[0]
 	line = strings.Replace(line, " ", "", -1)
 	line = strings.Replace(line, "\t", "", -1)
 
+	// lex
 	lexer(line)
 
 	if line == "" {
 		return
 	}
 
+	// parse
 	if strings.HasPrefix(line, factDeclar) {
 		env.initialFacts = strings.Split(strings.TrimPrefix(line, factDeclar), "")
 	} else if strings.HasPrefix(line, queryDeclar) {
@@ -90,23 +95,25 @@ func parseLine(line string) {
  * Initialize env.allFacts from all mentioned facts
  */
 func initAllFacts() {
-	// list from initial facts
-	env.allFacts = make([]string, len(env.initialFacts))
-	copy(env.allFacts, env.initialFacts)
+
+	env.allFacts = make(map[string]int)
 
 	// list from query facts
-	for _, fact := range env.queries {
-		if !stringInSlice(fact, env.allFacts) {
-			env.allFacts = append(env.allFacts, fact)
-		}
+	for _, f := range env.queries {
+		env.allFacts[f] = unknownF
 	}
 
 	// list from statement facts
-	for _, statement := range env.rules {
-		for _, stmt := range statement {
-			if !stringInSlice(string(stmt), env.allFacts) && stringInSlice(string(stmt), strings.Split(factSymbol, "")) {
-				env.allFacts = append(env.allFacts, string(stmt))
+	for _, rule := range env.rules {
+		for _, f := range rule {
+			if charInString(f, factSymbol) {
+				env.allFacts[string(f)] = unknownF
 			}
 		}
+	}
+
+	// list from initial facts
+	for _, f := range env.initialFacts {
+		env.allFacts[f] = trueF
 	}
 }
