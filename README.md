@@ -3,17 +3,18 @@ Backward chaining inference engine - Scholar project
 Written in Golang (go1.13 darwin/amd64)
 # Compilation / Install
 
-    go build *.go
-this compiles the executable in current directory
-or
+Use makefile : make / make run
 
-    go install expert_system
-this compiles the executable in GOPATH/bin
 # Usage
 
+With a file :
 ./expert_system example_input.txt
 
-## Author
+or dynamically :
+./expert_system
 
-* **Fabien Blin** @ Le-101
-* **Kevin Azoulay** @ Le-101
+## Authors
+
+* **Fabien Blin** @ 42 Lyon
+* **Kevin Azoulay** @ 42 Lyon
+* **Johann Monnerie** @ 42 Lyon
