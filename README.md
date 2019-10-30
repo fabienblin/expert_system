@@ -17,6 +17,14 @@ or dynamically :
 
 ## input
 
+example :
+
+A+B=>C
+
+=AB
+
+?C
+
 ### rules
 
 and : +
