@@ -8,7 +8,7 @@ Use makefile : make / make run
 # Usage
 
 With a file :
-./expert_system example_input.txt
+./bin/expert_system example_input.txt
 
 or dynamically :
 ./expert_system
