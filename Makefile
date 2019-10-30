@@ -14,7 +14,17 @@
 #******************************************************************************#
                                    #* Makefile *#
 
+
+SRC_FILES = engine.go \
+			header.go \
+			lexer.go \
+			main.go \
+			parser.go \
+			infTree.go \
+			utils.go
+
 .PHONY: build get install run watch start stop restart fclean
+
 
 GOPATH = $(shell pwd)
 GOBIN = $(GOPATH)/bin
