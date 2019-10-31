@@ -1,38 +1,27 @@
-#******************************************************************************#
-#*                                                                            *#
-#*          ▄▄▄██▀▀▀      ███▄ ▄███▓         ██▓    ▄▄▄       ▄▄▄▄            *#
-#*            ▒██        ▓██▒▀█▀ ██▒        ▓██▒   ▒████▄    ▓█████▄          *#
-#*            ░██        ▓██    ▓██░        ▒██░   ▒██  ▀█▄  ▒██▒ ▄██         *#
-#*         ▓██▄██▓       ▒██    ▒██         ▒██░   ░██▄▄▄▄██ ▒██░█▀           *#
-#*          ▓███▒    ██▓ ▒██▒   ░██▒ ██▓    ░██████▒▓█   ▓██▒░▓█  ▀█▓         *#
-#*          ▒▓▒▒░    ▒▓▒ ░ ▒░   ░  ░ ▒▓▒    ░ ▒░▓  ░▒▒   ▓▒█░░▒▓███▀▒         *#
-#*          ▒ ░▒░    ░▒  ░  ░      ░ ░▒     ░ ░ ▒  ░ ▒   ▒▒ ░▒░▒   ░          *#
-#*          ░ ░ ░    ░   ░      ░    ░        ░ ░    ░   ▒    ░    ░          *#
-#*          ░   ░     ░         ░     ░         ░  ░     ░  ░ ░               *#
-#*                    ░               ░                            ░          *#
-#*                                                                            *#
-#******************************************************************************#
-                                   #* Makefile *#
-
-
-SRC_FILES = engine.go \
-			header.go \
-			lexer.go \
-			main.go \
-			parser.go \
-			infTree.go \
-			utils.go
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/10/30 17:57:13 by jmonneri          #+#    #+#              #
+#    Updated: 2019/10/31 00:44:03 by jmonneri         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 .PHONY: all get install run fclean
 
+GONAME = expert_system
+
+TEST_FILE = example_input.txt
+#TEST_FILE = errors_input.txt
 
 GOPATH = $(shell pwd)
 GOBIN = $(GOPATH)/bin
 GOENV = GOPATH=$(GOPATH) GOBIN=$(GOBIN)  
 GOFILES = $(wildcard cmd/*.go)
-GONAME = expert_system
 EXECPATH = ./bin/$(GONAME)
-TEST_FILE = example_input.txt
 
 all: $(EXECPATH)
 
