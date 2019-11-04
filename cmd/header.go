@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:04 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/10/31 05:03:30 by jmonneri         ###   ########.fr       */
+/*   Updated: 2019/10/31 06:01:41 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,3 +68,5 @@ var env struct {
 	allFacts     map[string]int
 	trees        []infTree
 }
+
+var opeFunc []func(bool, int, bool, int) int
