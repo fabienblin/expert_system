@@ -11,19 +11,29 @@ import (
  */
 func newInfTree() *infTree {
 	var t infTree
+	t.fact = newFact()
 	t.head = nil
 	t.left = nil
-	t.operator = ""
-	t.precedence = 10
 	t.right = nil
+	t.precedence = 10
 	return &t
+}
+
+/*
+ * fact structure constructor
+ */
+func newFact() *fact {
+	var f fact
+	f.op = ""
+	f.isKnown = false
+	f.isTrue = false
+	return &f
 }
 
 /*
  * Print infTree with variable indetation
  */
 func printNode(node *infTree, indent int) {
-
 	if node == nil {
 		return
 	}
@@ -32,8 +42,7 @@ func printNode(node *infTree, indent int) {
 	for i := 0; i < indent; i++ {
 		fmt.Printf(" ")
 	}
-	fmt.Printf(node.operator + "\n")
-
+	fmt.Printf(node.fact.op + "\n")
 	printNode(node.left, indent+4)
 }
 
@@ -47,18 +56,18 @@ func buildTree() {
 	for _, rule := range env.rules {
 		root = newInfTree()
 		root.precedence = 1
-		root.operator = openBra
+		root.fact.op = openBra
 		var current = root
 		for i := 0; i < len(rule); i++ {
 			if rule[i] != ' ' && rule[i] != '\t' {
 				if i+3 < len(rule) && rule[i:i+3] == ioi {
-					current = build(root, current, ioi)
+					current = buildLeaf(root, current, ioi)
 					i += 2
 				} else if i+2 < len(rule) && rule[i:i+2] == imp {
-					current = build(root, current, imp)
+					current = buildLeaf(root, current, imp)
 					i++
 				} else {
-					current = build(root, current, string(rule[i]))
+					current = buildLeaf(root, current, string(rule[i]))
 				}
 			}
 		}
@@ -70,41 +79,41 @@ func buildTree() {
 	}
 }
 
-func build(root *infTree, current *infTree, c string) *infTree {
+func buildLeaf(root *infTree, current *infTree, c string) *infTree {
 	var node = newInfTree()
 	var info = noInfo
 
 	if c == openBra {
 		node.precedence = openBraPre
-		node.operator = openBra
+		node.fact.op = openBra
 		info = skipClimbUp
 	} else if c == closeBra {
 		node.precedence = closeBraPre
-		node.operator = closeBra
+		node.fact.op = closeBra
 		info = rightAssociative
 	} else if c == ioi {
 		node.precedence = ioiPre
-		node.operator = ioi
+		node.fact.op = ioi
 		info = rightAssociative
 	} else if c == imp {
 		node.precedence = impPre
-		node.operator = imp
+		node.fact.op = imp
 		info = rightAssociative
 	} else if c == not {
 		node.precedence = notPre
-		node.operator = not
+		node.fact.op = not
 	} else if c == and {
 		node.precedence = andPre
-		node.operator = and
+		node.fact.op = and
 	} else if c == or {
 		node.precedence = orPre
-		node.operator = or
+		node.fact.op = or
 	} else if c == xor {
 		node.precedence = xorPre
-		node.operator = xor
+		node.fact.op = xor
 	} else if strings.Contains(factSymbol, c) {
 		node.precedence = factPre
-		node.operator = c
+		node.fact.op = c
 		if stringInSlice(c, env.initialFacts) {
 		}
 	} else {
@@ -132,7 +141,7 @@ func insertNodeItem(current *infTree, item infTree, info nodeInfo) *infTree {
 			}
 		}
 	}
-	if item.operator == closeBra {
+	if item.fact.op == closeBra {
 		/* step 5.1: remove the '(' node */
 		node = current.head
 		node.right = current.right

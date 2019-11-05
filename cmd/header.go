@@ -44,14 +44,20 @@ type infTree struct {
 	head       *infTree
 	left       *infTree
 	right      *infTree
-	operator   string
 	precedence precedence
+	fact       *fact
+}
+
+type fact struct {
+	op      string
+	isTrue  bool
+	isKnown bool
 }
 
 var env struct {
 	rules        []string
 	initialFacts []string
 	queries      []string
-	allFacts     map[string]int
 	trees        []infTree
+	factList     map[string]*fact
 }
