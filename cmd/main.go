@@ -17,14 +17,9 @@ func main() {
 		fmt.Println("Error. Retry later ...")
 		os.Exit(1)
 	}
-
-	initAllFacts()
-	buildTree()
-
 	for _, tree := range env.trees {
 		fmt.Printf("\nROOT : \n----------------------------\n")
 		printNode(&tree, 4)
 	}
-
 	engine()
 }
