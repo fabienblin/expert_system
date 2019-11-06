@@ -31,22 +31,6 @@ func newFact() *fact {
 }
 
 /*
- * Print infTree with variable indetation
- */
-func printNode(node *infTree, indent int) {
-	if node == nil {
-		return
-	}
-	printNode(node.right, indent+4)
-
-	for i := 0; i < indent; i++ {
-		fmt.Printf(" ")
-	}
-	fmt.Printf("%v\n", node.fact.op)
-	printNode(node.left, indent+4)
-}
-
-/*
  * Build the inference tree with all facts and statements
  * https://www.rhyscitlema.com/algorithms/expression-parsing-algorithm/
  */
@@ -165,4 +149,20 @@ func insertNodeItem(current *infTree, item infTree, info nodeInfo) *infTree {
 		current = node
 	}
 	return current
+}
+
+/*
+ * Print infTree with variable indetation
+ */
+func printNode(node *infTree, indent int) {
+	if node == nil {
+		return
+	}
+	printNode(node.right, indent+4)
+
+	for i := 0; i < indent; i++ {
+		fmt.Printf(" ")
+	}
+	fmt.Printf("%v\n", node.fact)
+	printNode(node.left, indent+4)
 }

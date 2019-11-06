@@ -2,24 +2,18 @@ package main
 
 import (
 	"fmt"
-	"os"
 )
 
 func main() {
 
-	env.factList = make(map[string]*fact)
+	parse()
 
-	if len(os.Args) == 1 { // dynamic ruleset
-		parseDynamic()
-	} else if len(os.Args) == 2 { // file ruleset
-		parseFile(os.Args[1])
-	} else { // error
-		fmt.Println("Error. Retry later ...")
-		os.Exit(1)
-	}
-
-	initAllFacts()
-	buildTree()
+	// default fact Z={"Z", false, false}
+	// two methods to access any fact.
+	// 1: from env.factList (parser)
+	// 2: from env.trees (engine)
+	env.factList["Z"].isKnown = true
+	env.trees[0].right.fact.isTrue = true
 
 	for _, tree := range env.trees {
 		fmt.Printf("\nROOT : \n----------------------------\n")
