@@ -11,7 +11,7 @@ import (
  */
 func newInfTree() *infTree {
 	var t infTree
-	t.fact = newFact()
+	t.fact = nil
 	t.head = nil
 	t.left = nil
 	t.right = nil
@@ -42,7 +42,7 @@ func printNode(node *infTree, indent int) {
 	for i := 0; i < indent; i++ {
 		fmt.Printf(" ")
 	}
-	fmt.Printf(node.fact.op + "\n")
+	fmt.Printf("%v\n", node.fact.op)
 	printNode(node.left, indent+4)
 }
 
@@ -56,7 +56,7 @@ func buildTree() {
 	for _, rule := range env.rules {
 		root = newInfTree()
 		root.precedence = 1
-		root.fact.op = openBra
+		//root.fact.op = openBra
 		var current = root
 		for i := 0; i < len(rule); i++ {
 			if rule[i] != ' ' && rule[i] != '\t' {
@@ -81,6 +81,7 @@ func buildTree() {
 
 func buildLeaf(root *infTree, current *infTree, c string) *infTree {
 	var node = newInfTree()
+	node.fact = newFact()
 	var info = noInfo
 
 	if c == openBra {
@@ -113,9 +114,7 @@ func buildLeaf(root *infTree, current *infTree, c string) *infTree {
 		node.fact.op = xor
 	} else if strings.Contains(factSymbol, c) {
 		node.precedence = factPre
-		node.fact.op = c
-		if stringInSlice(c, env.initialFacts) {
-		}
+		node.fact = env.factList[c]
 	} else {
 		fmt.Printf("bug parse : '%s'\n", c)
 		os.Exit(1)

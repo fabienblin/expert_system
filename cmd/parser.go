@@ -33,8 +33,6 @@ func parseFile(fileName string) {
 		log.Fatal("Incomplete data from file.\n")
 		os.Exit(1)
 	}
-	initAllFacts()
-	buildTree()
 }
 
 /*
@@ -62,8 +60,6 @@ func parseDynamic() {
 		log.Fatal("Incomplete data from input.\n")
 		os.Exit(1)
 	}
-	initAllFacts()
-	buildTree()
 }
 
 /*
