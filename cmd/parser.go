@@ -35,8 +35,7 @@ func parseFile(fileName string) {
 
 	file, err := os.Open(fileName)
 	if err != nil {
-		log.Fatal(err)
-		os.Exit(1)
+		log.Fatal(err) // Log and exit
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
