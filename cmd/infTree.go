@@ -131,41 +131,34 @@ func insertNodeItem(current *infTree, item infTree, info nodeInfo) *infTree {
 	var node *infTree
 
 	if info != skipClimbUp {
-		/* step 4: climb up */
 		if info != rightAssociative {
-			/* for left-associative */
 			for current.precedence >= item.precedence {
 				current = current.head
 			}
 		} else {
-			/* for right-associative */
 			for current.precedence > item.precedence {
 				current = current.head
 			}
 		}
 	}
 	if item.fact.op == closeBra {
-		/* step 5.1: remove the '(' node */
 		node = current.head
 		node.right = current.right
 		if current.right != nil {
 			current.right.head = node
 		}
-		/* step 6: Set the 'current node' to be the parent node */
 		current = node
 	} else {
-		/* step 5.1: create the new node */
 		node = newInfTree()
 		*node = item
 		node.right = nil
-		/* step 5.2: add the new node */
 		node.left = current.right
 		if current.right != nil {
 			current.right.head = node
 		}
 		current.right = node
 		node.head = current
-		/* step 6: Set the 'current node' to be the new node */
+
 		current = node
 	}
 	return current
