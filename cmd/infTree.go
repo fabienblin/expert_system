@@ -41,7 +41,6 @@ func buildTree() {
 	for _, rule := range env.rules {
 		root = newInfTree()
 		root.precedence = 1
-		//root.fact.op = openBra
 		var current = root
 		for i := 0; i < len(rule); i++ {
 			if rule[i] != ' ' && rule[i] != '\t' {
@@ -62,45 +61,26 @@ func buildTree() {
 		root = root.right
 		env.trees = append(env.trees, root)
 	}
-	// for _, tree := range env.trees {
-	// 	fmt.Printf("\nROOT : \n----------------------------\n")
-	// 	printNode(&tree, 4)
-	// }
 
 	// set env.tree
 	root = nil
 	for _, t := range env.trees {
-		fmt.Printf("\nTREE : \n----------------------------\n")
-		printNode(t, 4)
-		fmt.Printf("\nROOT : \n--------------\n")
-		printNode(root, 4)
 		var jointInfTree = newInfTree()
 		var jointFact = newFact()
 		jointInfTree.fact = jointFact
 		jointFact.op = "+"
-		fmt.Printf("\ntime init: \n...............\n")
-		printNode(jointInfTree, 4)
 
 		jointInfTree.left = t
 		jointInfTree.left.head = jointInfTree
-		fmt.Printf("\ntime left: \n...............\n")
-		printNode(jointInfTree, 4)
 
 		jointInfTree.right = root
 		if jointInfTree.right != nil {
 			jointInfTree.right.head = jointInfTree
 		}
-		fmt.Printf("\ntime right: \n...............\n")
-		printNode(jointInfTree, 4)
 
 		root = jointInfTree
-		fmt.Printf("\ntime join root : \n...............\n")
-		printNode(root, 4)
-		fmt.Printf("\n\n\n\n\n\n\n\n\n\n\n\n\n")
 	}
 	env.tree = root
-	fmt.Printf("\nENV.TREE : \n----------------------------\n")
-	printNode(env.tree, 4)
 }
 
 func buildLeaf(root *infTree, current *infTree, c string) *infTree {
