@@ -1,6 +1,9 @@
 # Expert System
+
 Backward chaining inference engine - Scholar project
+
 Written in Golang (go1.13 darwin/amd64)
+
 # Compilation / Install
 
 Use makefile : make / make run
