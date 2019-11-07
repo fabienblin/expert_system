@@ -31,32 +31,16 @@ func newFact() *fact {
 }
 
 /*
- * Print infTree with variable indetation
- */
-func printNode(node *infTree, indent int) {
-	if node == nil {
-		return
-	}
-	printNode(node.right, indent+4)
-
-	for i := 0; i < indent; i++ {
-		fmt.Printf(" ")
-	}
-	fmt.Printf("%v\n", node.fact.op)
-	printNode(node.left, indent+4)
-}
-
-/*
  * Build the inference tree with all facts and statements
  * https://www.rhyscitlema.com/algorithms/expression-parsing-algorithm/
  */
 func buildTree() {
 	var root *infTree
 
+	// set env.trees
 	for _, rule := range env.rules {
 		root = newInfTree()
 		root.precedence = 1
-		//root.fact.op = openBra
 		var current = root
 		for i := 0; i < len(rule); i++ {
 			if rule[i] != ' ' && rule[i] != '\t' {
@@ -75,8 +59,28 @@ func buildTree() {
 			root.right.head = nil
 		}
 		root = root.right
-		env.trees = append(env.trees, *root)
+		env.trees = append(env.trees, root)
 	}
+
+	// set env.tree
+	root = nil
+	for _, t := range env.trees {
+		var jointInfTree = newInfTree()
+		var jointFact = newFact()
+		jointInfTree.fact = jointFact
+		jointFact.op = "+"
+
+		jointInfTree.left = t
+		jointInfTree.left.head = jointInfTree
+
+		jointInfTree.right = root
+		if jointInfTree.right != nil {
+			jointInfTree.right.head = jointInfTree
+		}
+
+		root = jointInfTree
+	}
+	env.tree = root
 }
 
 func buildLeaf(root *infTree, current *infTree, c string) *infTree {
@@ -127,42 +131,51 @@ func insertNodeItem(current *infTree, item infTree, info nodeInfo) *infTree {
 	var node *infTree
 
 	if info != skipClimbUp {
-		/* step 4: climb up */
 		if info != rightAssociative {
-			/* for left-associative */
 			for current.precedence >= item.precedence {
 				current = current.head
 			}
 		} else {
-			/* for right-associative */
 			for current.precedence > item.precedence {
 				current = current.head
 			}
 		}
 	}
 	if item.fact.op == closeBra {
-		/* step 5.1: remove the '(' node */
 		node = current.head
 		node.right = current.right
 		if current.right != nil {
 			current.right.head = node
 		}
-		/* step 6: Set the 'current node' to be the parent node */
 		current = node
 	} else {
-		/* step 5.1: create the new node */
 		node = newInfTree()
 		*node = item
 		node.right = nil
-		/* step 5.2: add the new node */
 		node.left = current.right
 		if current.right != nil {
 			current.right.head = node
 		}
 		current.right = node
 		node.head = current
-		/* step 6: Set the 'current node' to be the new node */
+
 		current = node
 	}
 	return current
+}
+
+/*
+ * Print infTree with variable indetation
+ */
+func printNode(node *infTree, indent int) {
+	if node == nil {
+		return
+	}
+	printNode(node.right, indent+4)
+
+	for i := 0; i < indent; i++ {
+		fmt.Printf(" ")
+	}
+	fmt.Printf("%v\n", node.fact.op)
+	printNode(node.left, indent+4)
 }
