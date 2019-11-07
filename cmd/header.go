@@ -58,6 +58,7 @@ var env struct {
 	rules        []string
 	initialFacts []string
 	queries      []string
-	trees        []infTree
+	trees        []*infTree
 	factList     map[string]*fact
+	tree         *infTree
 }

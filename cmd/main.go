@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 func main() {
 
 	parse()
@@ -15,10 +11,9 @@ func main() {
 	env.factList["Z"].isKnown = true
 	env.trees[0].right.fact.isTrue = true
 
-	for _, tree := range env.trees {
-		fmt.Printf("\nROOT : \n----------------------------\n")
-		printNode(&tree, 4)
-	}
+	// trees
+
+	// tree
 
 	engine()
 }
