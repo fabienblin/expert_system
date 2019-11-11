@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:26 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/10/30 17:53:00 by jmonneri         ###   ########.fr       */
+/*   Updated: 2019/11/11 18:30:53 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,6 @@ func initAllFacts() {
 			env.factList[string(f)] = newFact()
 		}
 		env.factList[string(f)].op = string(f)
-		env.factList[string(f)].isKnown = false
-		env.factList[string(f)].isTrue = false
 	}
 
 	// list from statement facts
@@ -140,8 +138,6 @@ func initAllFacts() {
 					env.factList[string(f)] = newFact()
 				}
 				env.factList[string(f)].op = string(f)
-				env.factList[string(f)].isKnown = false
-				env.factList[string(f)].isTrue = false
 			}
 		}
 	}
@@ -152,7 +148,7 @@ func initAllFacts() {
 			env.factList[string(f)] = newFact()
 		}
 		env.factList[string(f)].op = string(f)
+		env.factList[string(f)].value = trueF
 		env.factList[string(f)].isKnown = true
-		env.factList[string(f)].isTrue = true
 	}
 }

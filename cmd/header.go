@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:04 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/11/11 16:37:52 by jmonneri         ###   ########.fr       */
+/*   Updated: 2019/11/11 19:31:07 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ const (
 	imp         string = "=>"
 	ioi         string = "<=>"
 	com         string = "#"
-	factSymbol  string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+	factSymbol  string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	factDeclar  string = "="
 	queryDeclar string = "?"
 	trueF       int    = 1
 	falseF      int    = 0
-	unknownF    int    = -1
+	defaultF    int    = -1
+	unknownF    int    = -2
 )
 
 type nodeInfo int
@@ -62,8 +63,8 @@ type infTree struct {
 
 type fact struct {
 	op      string
-	isTrue  bool
 	isKnown bool
+	value   int
 }
 
 var env struct {
@@ -75,4 +76,11 @@ var env struct {
 	tree         *infTree
 }
 
-var opeFunc []func(bool, int, bool, int) int
+var opeFunc = map[string]func(*infTree) (bool, error){
+	not: notFunc,
+	and: andFunc,
+	or:  orFunc,
+	xor: xorFunc,
+	ioi: ioiFunc,
+	imp: impFunc,
+}

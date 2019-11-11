@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:51:53 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/10/31 05:59:27 by jmonneri         ###   ########.fr       */
+/*   Updated: 2019/11/11 18:40:04 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,34 +33,39 @@ func computeTrees() (bool, error) {
 	for changed {
 		changed = false
 		for _, tree := range env.trees {
-			changedThings, _, err := backwardChaining(&tree)
+			changedThings, err := backwardChaining(tree)
 			if err != nil {
 				return false, err
-			} else if changedThings {
-				changed = true
 			}
+			changed = changedThings
 		}
 	}
 	return true, nil
 }
 
-func backwardChaining(tree *infTree) (bool, int, error) {
-	if tree == nil {
-		return false, 0, errors.New("Qu'est-ce que je fous la? mon tree est nil")
+func backwardChaining(node *infTree) (bool, error) {
+	// Ici on va pouvoir gérer quand on n'a pas de rules
+	if node == nil {
+		return false, errors.New("Qu'est-ce que je fous la? mon node est nil")
 	}
 	// Cela permet de ne pas descendre trop loin dans l'arbre si la branche fille est déjà trouvée
-	if tree.isTrue >= 0 {
-		return true, tree.isTrue, nil
+	if node.fact.isKnown {
+		fmt.Printf("%3s %2d => Head\n", node.fact.op, node.fact.value)
+		return false, nil
 	}
 	// Ici on return car l'on est sur un caractere
-	if strings.Contains(factSymbol, tree.operator) {
-		return false, tree.isTrue, nil
+	if strings.Contains(factSymbol, node.fact.op) {
+		fmt.Printf("%3s %2d => Head\n", node.fact.op, node.fact.value)
+		return node.fact.value != defaultF, nil
 	}
 	// On lance a gauche puis a droite et on recupere les valeurs de retour
-	valueIsKnownL, valueL, _ := backwardChaining(tree.left)
-	valueIsKnownR, valueR, _ := backwardChaining(tree.right)
-	// On lance la fonction de l'operateur        !!! Il faut faire le tableau de pointeur sur fonction
-	opeFunc[tree.operator](valueIsKnownL, valueL, valueIsKnownR, valueR)
+	fmt.Printf("%3s %2d => Left\n", node.fact.op, node.fact.value)
+	changedL, _ := backwardChaining(node.left)
+	fmt.Printf("%3s %2d => Right\n", node.fact.op, node.fact.value)
+	changedR, _ := backwardChaining(node.right)
+	fmt.Printf("%3s %2d => Function\n", node.fact.op, node.fact.value)
+	// On lance la fonction de l'operateur
+	opeFunc[node.fact.op](node)
 
-	return true, 0, errors.New("Bad rules")
+	return changedL || changedR, errors.New("Bad rules") // !! ligne a refaire
 }

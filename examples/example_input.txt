@@ -4,12 +4,25 @@
 # shown here. spacing is not important
 
 #children => head
-A+B+!(C|D)<=>Z+D
+A + B + !(C | D) <=> Z + D
 !G+H=>Z
 A^!G=>Z
-(F+R|(!T)+I|H)=>O
+(F + R | (!T) + I | H ) => O
 =ABG # Initial facts : A, B and G are true. All others are false.
 
 # If no facts are initially true, then a simple "=" followed
 # by a newline is used
 ?GVX # Queries : What are G, V and X ?
+
+#                            D
+#                        +
+#                            Z
+#                    <=>
+#                                    D
+#                                |
+#                                    C
+#                            !
+#                        +
+#                                B
+#                            +
+#                                A

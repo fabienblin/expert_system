@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:09 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/10/31 05:08:19 by jmonneri         ###   ########.fr       */
+/*   Updated: 2019/11/11 18:54:33 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ func newInfTree() *infTree {
 func newFact() *fact {
 	var f fact
 	f.op = ""
+	f.value = defaultF
 	f.isKnown = false
-	f.isTrue = false
 	return &f
 }
 
@@ -188,6 +188,6 @@ func printNode(node *infTree, indent int) {
 	for i := 0; i < indent; i++ {
 		fmt.Printf(" ")
 	}
-	fmt.Printf("%v\n", node.fact.op)
+	fmt.Printf("%v %d\n", node.fact.op, node.fact.value)
 	printNode(node.left, indent+4)
 }
