@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 14:34:50 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/11/11 21:05:16 by jmonneri         ###   ########.fr       */
+/*   Updated: 2019/11/11 21:07:21 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,13 @@ func notFunc(node *infTree) (bool, error) {
 	if node.right.fact.isKnown {
 		if node.right.fact.value == trueF {
 			return setToFalseF(node)
-		} else {
-			return setToTrueF(node)
 		}
+		return setToTrueF(node)
 	} else if node.fact.isKnown {
 		if node.fact.value == trueF {
 			return setToFalseF(node.right)
-		} else {
-			return setToTrueF(node.right)
 		}
+		return setToTrueF(node.right)
 	}
 	return false, nil
 }
@@ -121,7 +119,7 @@ func orFunc(node *infTree) (bool, error) {
 	return false, nil
 }
 
-func xorFunc(node *infTree) (bool, error) {
+func xorFunc(node *infTree) (bool, error) { // J' en suis ici
 	fmt.Printf("xorFunc\n")
 	leftFact := node.left.fact
 	rightFact := node.right.fact
