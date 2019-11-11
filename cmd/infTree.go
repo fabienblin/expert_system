@@ -23,30 +23,23 @@ import (
  */
 func newInfTree() *infTree {
 	var t infTree
+	t.fact = nil
 	t.head = nil
 	t.left = nil
-	t.operator = ""
-	t.precedence = 10
 	t.right = nil
+	t.precedence = 10
 	return &t
 }
 
 /*
- * Print infTree with variable indetation
+ * fact structure constructor
  */
-func printNode(node *infTree, indent int) {
-
-	if node == nil {
-		return
-	}
-	printNode(node.right, indent+4)
-
-	for i := 0; i < indent; i++ {
-		fmt.Printf(" ")
-	}
-	fmt.Printf(node.operator + "\n")
-
-	printNode(node.left, indent+4)
+func newFact() *fact {
+	var f fact
+	f.op = ""
+	f.isKnown = false
+	f.isTrue = false
+	return &f
 }
 
 /*
@@ -56,21 +49,21 @@ func printNode(node *infTree, indent int) {
 func buildTree() {
 	var root *infTree
 
+	// set env.trees
 	for _, rule := range env.rules {
 		root = newInfTree()
 		root.precedence = 1
-		root.operator = openBra
 		var current = root
 		for i := 0; i < len(rule); i++ {
 			if rule[i] != ' ' && rule[i] != '\t' {
 				if i+3 < len(rule) && rule[i:i+3] == ioi {
-					current = build(root, current, ioi)
+					current = buildLeaf(root, current, ioi)
 					i += 2
 				} else if i+2 < len(rule) && rule[i:i+2] == imp {
-					current = build(root, current, imp)
+					current = buildLeaf(root, current, imp)
 					i++
 				} else {
-					current = build(root, current, string(rule[i]))
+					current = buildLeaf(root, current, string(rule[i]))
 				}
 			}
 		}
@@ -78,47 +71,66 @@ func buildTree() {
 			root.right.head = nil
 		}
 		root = root.right
-		env.trees = append(env.trees, *root)
+		env.trees = append(env.trees, root)
 	}
+
+	// set env.tree
+	root = nil
+	for _, t := range env.trees {
+		var jointInfTree = newInfTree()
+		var jointFact = newFact()
+		jointInfTree.fact = jointFact
+		jointFact.op = "+"
+
+		jointInfTree.left = t
+		jointInfTree.left.head = jointInfTree
+
+		jointInfTree.right = root
+		if jointInfTree.right != nil {
+			jointInfTree.right.head = jointInfTree
+		}
+
+		root = jointInfTree
+	}
+	env.tree = root
 }
 
-func build(root *infTree, current *infTree, c string) *infTree {
+func buildLeaf(root *infTree, current *infTree, c string) *infTree {
 	var node = newInfTree()
+	node.fact = newFact()
 	var info = noInfo
 
 	if c == openBra {
 		node.precedence = openBraPre
-		node.operator = openBra
+		node.fact.op = openBra
 		info = skipClimbUp
 	} else if c == closeBra {
 		node.precedence = closeBraPre
-		node.operator = closeBra
+		node.fact.op = closeBra
 		info = rightAssociative
 	} else if c == ioi {
 		node.precedence = ioiPre
-		node.operator = ioi
+		node.fact.op = ioi
 		info = rightAssociative
 	} else if c == imp {
 		node.precedence = impPre
-		node.operator = imp
+		node.fact.op = imp
 		info = rightAssociative
 	} else if c == not {
 		node.precedence = notPre
-		node.operator = not
+		node.fact.op = not
 	} else if c == and {
 		node.precedence = andPre
-		node.operator = and
+		node.fact.op = and
 	} else if c == or {
 		node.precedence = orPre
-		node.operator = or
+		node.fact.op = or
 	} else if c == xor {
 		node.precedence = xorPre
-		node.operator = xor
+		node.fact.op = xor
 	} else if strings.Contains(factSymbol, c) {
 		node.precedence = factPre
-		node.operator = c
-		if stringInSlice(c, env.initialFacts) {
-		}
+		node.fact = env.factList[c]
 	} else {
 		fmt.Printf("bug parse : '%s'\n", c)
 		os.Exit(1)
@@ -131,42 +143,51 @@ func insertNodeItem(current *infTree, item infTree, info nodeInfo) *infTree {
 	var node *infTree
 
 	if info != skipClimbUp {
-		/* step 4: climb up */
 		if info != rightAssociative {
-			/* for left-associative */
 			for current.precedence >= item.precedence {
 				current = current.head
 			}
 		} else {
-			/* for right-associative */
 			for current.precedence > item.precedence {
 				current = current.head
 			}
 		}
 	}
-	if item.operator == closeBra {
-		/* step 5.1: remove the '(' node */
+	if item.fact.op == closeBra {
 		node = current.head
 		node.right = current.right
 		if current.right != nil {
 			current.right.head = node
 		}
-		/* step 6: Set the 'current node' to be the parent node */
 		current = node
 	} else {
-		/* step 5.1: create the new node */
 		node = newInfTree()
 		*node = item
 		node.right = nil
-		/* step 5.2: add the new node */
 		node.left = current.right
 		if current.right != nil {
 			current.right.head = node
 		}
 		current.right = node
 		node.head = current
-		/* step 6: Set the 'current node' to be the new node */
+
 		current = node
 	}
 	return current
+}
+
+/*
+ * Print infTree with variable indetation
+ */
+func printNode(node *infTree, indent int) {
+	if node == nil {
+		return
+	}
+	printNode(node.right, indent+4)
+
+	for i := 0; i < indent; i++ {
+		fmt.Printf(" ")
+	}
+	fmt.Printf("%v\n", node.fact.op)
+	printNode(node.left, indent+4)
 }

@@ -21,6 +21,25 @@ import (
 )
 
 /*
+ * Main parse function takes program args and defines exec mode
+ */
+func parse() {
+	env.factList = make(map[string]*fact)
+
+	if len(os.Args) == 1 { // dynamic ruleset
+		parseDynamic()
+	} else if len(os.Args) == 2 { // file ruleset
+		parseFile(os.Args[1])
+	} else { // error
+		fmt.Println("Error. Retry later ...")
+		os.Exit(1)
+	}
+
+	initAllFacts()
+	buildTree()
+}
+
+/*
  * Parse file and initialize the env global variable
  */
 func parseFile(fileName string) {
@@ -44,8 +63,6 @@ func parseFile(fileName string) {
 		log.Fatal("Incomplete data from file.\n")
 		os.Exit(1)
 	}
-	initAllFacts()
-	buildTree()
 }
 
 /*
@@ -73,8 +90,6 @@ func parseDynamic() {
 		log.Fatal("Incomplete data from input.\n")
 		os.Exit(1)
 	}
-	initAllFacts()
-	buildTree()
 }
 
 /*
@@ -107,24 +122,37 @@ func parseLine(line string) {
  */
 func initAllFacts() {
 
-	env.allFacts = make(map[string]int)
-
 	// list from query facts
 	for _, f := range env.queries {
-		env.allFacts[f] = unknownF
+		if _, ok := env.factList[string(f)]; !ok {
+			env.factList[string(f)] = newFact()
+		}
+		env.factList[string(f)].op = string(f)
+		env.factList[string(f)].isKnown = false
+		env.factList[string(f)].isTrue = false
 	}
 
 	// list from statement facts
 	for _, rule := range env.rules {
 		for _, f := range rule {
 			if charInString(f, factSymbol) {
-				env.allFacts[string(f)] = unknownF
+				if _, ok := env.factList[string(f)]; !ok {
+					env.factList[string(f)] = newFact()
+				}
+				env.factList[string(f)].op = string(f)
+				env.factList[string(f)].isKnown = false
+				env.factList[string(f)].isTrue = false
 			}
 		}
 	}
 
 	// list from initial facts
 	for _, f := range env.initialFacts {
-		env.allFacts[f] = trueF
+		if _, ok := env.factList[string(f)]; !ok {
+			env.factList[string(f)] = newFact()
+		}
+		env.factList[string(f)].op = string(f)
+		env.factList[string(f)].isKnown = true
+		env.factList[string(f)].isTrue = true
 	}
 }
