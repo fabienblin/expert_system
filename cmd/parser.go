@@ -29,6 +29,7 @@ func parse() {
 
 /*
  * Parse file and initialize the env global variable
+ * !! UNUSED !!
  */
 func parseFile(fileName string) {
 	var line string
@@ -51,6 +52,9 @@ func parseFile(fileName string) {
 		log.Fatal("Incomplete data from file.\n")
 		os.Exit(1)
 	}
+
+	initAllFacts()
+	buildTree()
 }
 
 /*
@@ -78,6 +82,9 @@ func parseDynamic() {
 		log.Fatal("Incomplete data from input.\n")
 		os.Exit(1)
 	}
+
+	initAllFacts()
+	buildTree()
 }
 
 /*
