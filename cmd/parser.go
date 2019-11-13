@@ -117,16 +117,6 @@ func parseLine(line string) {
  */
 func initAllFacts() {
 
-	// list from query facts
-	for _, f := range env.queries {
-		if _, ok := env.factList[string(f)]; !ok {
-			env.factList[string(f)] = newFact()
-		}
-		env.factList[string(f)].op = string(f)
-		env.factList[string(f)].isKnown = false
-		env.factList[string(f)].isTrue = false
-	}
-
 	// list from statement facts
 	for _, rule := range env.rules {
 		for _, f := range rule {
@@ -144,10 +134,25 @@ func initAllFacts() {
 	// list from initial facts
 	for _, f := range env.initialFacts {
 		if _, ok := env.factList[string(f)]; !ok {
-			env.factList[string(f)] = newFact()
+			//env.factList[string(f)] = newFact()
+			fmt.Printf("Warning can't init unknown fact %q.\n", f)
+		} else {
+			env.factList[string(f)].op = string(f)
+			env.factList[string(f)].isKnown = true
+			env.factList[string(f)].isTrue = true
 		}
-		env.factList[string(f)].op = string(f)
-		env.factList[string(f)].isKnown = true
-		env.factList[string(f)].isTrue = true
+
+	}
+
+	// list from query facts
+	for _, f := range env.queries {
+		if _, ok := env.factList[string(f)]; !ok {
+			//env.factList[string(f)] = newFact()
+			fmt.Printf("Warning can't query unknown fact %q.\n", f)
+		} else {
+			env.factList[string(f)].op = string(f)
+			env.factList[string(f)].isKnown = false
+			env.factList[string(f)].isTrue = false
+		}
 	}
 }
