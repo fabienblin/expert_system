@@ -136,9 +136,9 @@ func initAllFacts() {
 			//env.factList[string(f)] = newFact()
 			fmt.Printf("Warning : can't init unknown fact %q.\n", f)
 		} else {
-			env.factList[string(f)].op = string(f)
-			env.factList[string(f)].isKnown = true
-			env.factList[string(f)].isTrue = true
+			// env.factList[string(f)].op = string(f)
+			// env.factList[string(f)].isKnown = true
+			// env.factList[string(f)].isTrue = true
 		}
 
 	}
@@ -149,9 +149,9 @@ func initAllFacts() {
 			//env.factList[string(f)] = newFact()
 			fmt.Printf("Warning : can't query unknown fact %q.\n", f)
 		} else {
-			env.factList[string(f)].op = string(f)
-			env.factList[string(f)].isKnown = false
-			env.factList[string(f)].isTrue = false
+			// env.factList[string(f)].op = string(f)
+			// env.factList[string(f)].isKnown = false
+			// env.factList[string(f)].isTrue = false
 		}
 	}
 }
