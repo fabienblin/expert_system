@@ -176,6 +176,6 @@ func printNode(node *infTree, indent int) {
 	for i := 0; i < indent; i++ {
 		fmt.Printf(" ")
 	}
-	fmt.Printf("%v\n", node.fact.op)
+	fmt.Printf("%v{%v}\n", node.fact.op, node.fact.isTrue)
 	printNode(node.left, indent+4)
 }

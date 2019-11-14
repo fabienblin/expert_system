@@ -19,7 +19,7 @@ func parse() {
 	} else if len(os.Args) == 2 { // file ruleset
 		parseFile(os.Args[1])
 	} else { // error
-		fmt.Println("Error. Retry later ...")
+		log.Fatal("Error. Retry later ...\n")
 		os.Exit(1)
 	}
 
@@ -64,7 +64,6 @@ func parseDynamic() {
 	var line string
 
 	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Printf("Using dynamic mode. \nPlease write the rules followed by initial facts then your query.\nType 'exit' to stop.\nType 'run' to run inference engine.\n")
 	for scanner.Scan() {
 		line = scanner.Text()
 		if line == "exit" {
@@ -135,7 +134,7 @@ func initAllFacts() {
 	for _, f := range env.initialFacts {
 		if _, ok := env.factList[string(f)]; !ok {
 			//env.factList[string(f)] = newFact()
-			fmt.Printf("Warning can't init unknown fact %q.\n", f)
+			fmt.Printf("Warning : can't init unknown fact %q.\n", f)
 		} else {
 			env.factList[string(f)].op = string(f)
 			env.factList[string(f)].isKnown = true
@@ -148,7 +147,7 @@ func initAllFacts() {
 	for _, f := range env.queries {
 		if _, ok := env.factList[string(f)]; !ok {
 			//env.factList[string(f)] = newFact()
-			fmt.Printf("Warning can't query unknown fact %q.\n", f)
+			fmt.Printf("Warning : can't query unknown fact %q.\n", f)
 		} else {
 			env.factList[string(f)].op = string(f)
 			env.factList[string(f)].isKnown = false
