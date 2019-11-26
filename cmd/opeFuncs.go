@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 14:34:50 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/11/11 21:07:21 by jmonneri         ###   ########.fr       */
+/*   Updated: 2019/11/26 18:23:46 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ func setToFalseF(node *infTree) (bool, error) {
 
 func setToUnknownF(node *infTree) (bool, error) {
 	if node.fact.isKnown {
-		return false, errors.New("Contradiction dans les données")
+		return false, errors.New("Contradiction dans les données") //!! a enlever
 	} else if node.fact.value != unknownF {
 		node.fact.value = unknownF
 		return true, nil
@@ -119,7 +119,7 @@ func orFunc(node *infTree) (bool, error) {
 	return false, nil
 }
 
-func xorFunc(node *infTree) (bool, error) { // J' en suis ici
+func xorFunc(node *infTree) (bool, error) {
 	fmt.Printf("xorFunc\n")
 	leftFact := node.left.fact
 	rightFact := node.right.fact
@@ -139,22 +139,45 @@ func xorFunc(node *infTree) (bool, error) { // J' en suis ici
 		}
 		setToUnknownF(node.left)
 		setToUnknownF(node.right)
-	} else if leftFact.value == trueF || rightFact.value == trueF {
+	} else if leftFact.isKnown && rightFact.isKnown && (leftFact.value != rightFact.value) {
 		return setToTrueF(node)
 	} else if node.fact.value == falseF {
+		if leftFact.isKnown {
+			if leftFact.value == trueF {
+				return setToTrueF(node.left)
+			}
+			return setToFalseF(node.left)
+		} else if rightFact.isKnown {
+			if rightFact.value == trueF {
+				return setToTrueF(node.right)
+			}
+			return setToFalseF(node.right)
+		}
+	}
+	return false, nil
+}
 
+func impFunc(node *infTree) (bool, error) {
+	fmt.Printf("impFunc\n")
+	if node.left.fact.value == trueF {
+		return setToTrueF(node.right)
 	}
 	return false, nil
 }
 
 func ioiFunc(node *infTree) (bool, error) {
 	fmt.Printf("ioiFunc\n")
-	printNode(node, 4)
-	return false, nil
-}
-
-func impFunc(node *infTree) (bool, error) {
-	fmt.Printf("impFunc\n")
-	printNode(node, 4)
+	if node.left.fact.isKnown {
+		if node.left.fact.value == trueF {
+			return setToTrueF(node.right)
+		}
+		return setToFalseF(node.right)
+	}
+	if node.right.fact.isKnown {
+		if node.right.fact.value == trueF {
+			return setToTrueF(node.left)
+		}
+		return setToFalseF(node.left)
+	}
 	return false, nil
 }

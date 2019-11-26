@@ -6,7 +6,7 @@
 #    By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/30 17:57:13 by jmonneri          #+#    #+#              #
-#    Updated: 2019/11/11 18:56:41 by jmonneri         ###   ########.fr        #
+#    Updated: 2019/11/26 20:01:31 by jmonneri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,7 @@
 
 GONAME = expert_system
 
-#TEST_FILE = example_input.txt
-#TEST_FILE = errors_input.txt
-TEST_FILE = jojo_input.txt
+TEST_FILE = operators/and2.txt
 
 GOPATH = $(shell pwd)
 GOBIN = $(GOPATH)/bin
