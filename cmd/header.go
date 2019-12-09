@@ -10,7 +10,7 @@ const (
 	imp         string = "=>"
 	ioi         string = "<=>"
 	com         string = "#"
-	factSymbol  string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+	factSymbol  string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	factDeclar  string = "="
 	queryDeclar string = "?"
 	trueF       int    = 1

@@ -1,7 +1,41 @@
 package main
 
+import (
+	"log"
+	"os"
+)
+
+func initEnv() {
+	env.factList = make(map[string]*fact)
+	env.initialFacts = nil
+	env.trees = nil
+}
+
 func main() {
-	parse()
-	printNode(env.tree, 4)
-	engine()
+
+	if len(os.Args) == 1 { // dynamic ruleset
+		for {
+			initEnv()
+			parseDynamic()
+
+			initAllFacts()
+			buildTree()
+
+			printNode(env.tree, 8)
+			engine()
+		}
+	} else if len(os.Args) == 2 { // file ruleset
+		initEnv()
+		parseFile(os.Args[1])
+
+		initAllFacts()
+		buildTree()
+
+		printNode(env.tree, 8)
+		engine()
+	} else { // error
+		log.Fatal("Error. Retry later ...\n")
+		os.Exit(1)
+	}
+	printNode(env.tree, 8)
 }
