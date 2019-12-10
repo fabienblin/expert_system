@@ -1,0 +1,13 @@
+A+B<=>C+D
+E|F<=>G|H
+I|J<=>K|L
+
+=CDGIK
+?ABEFJLH
+
+#A is true
+#B is true
+#E is undefined
+#F is undefined
+#J is undefined
+#L is undefined

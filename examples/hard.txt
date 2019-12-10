@@ -1,0 +1,9 @@
+A+B=>C
+C|E=>F
+A^E=>F
+
+=ABE
+?CF
+
+#C is true
+#F is true

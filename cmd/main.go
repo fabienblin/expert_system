@@ -21,7 +21,7 @@ func main() {
 			initAllFacts()
 			buildTree()
 
-			printNode(env.tree, 8)
+			// printNode(env.tree, 8)
 			engine()
 		}
 	} else if len(os.Args) == 2 { // file ruleset
@@ -31,7 +31,7 @@ func main() {
 		initAllFacts()
 		buildTree()
 
-		printNode(env.tree, 8)
+		// printNode(env.tree, 8)
 		engine()
 	} else { // error
 		log.Fatal("Error. Retry later ...\n")

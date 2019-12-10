@@ -1,0 +1,10 @@
+A => B | C | D | E
+A => !B
+A => !C
+D | E => F
+=A
+?FBCDE
+
+#F is true
+#DE is undefined
+#BC is false

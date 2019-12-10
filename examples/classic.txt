@@ -1,0 +1,14 @@
+A+B=>C|D
+E+F=>G+H
+I+J=>K^L
+M=>!N
+=ABEFIJM
+?CDGHKLN
+
+#C is undefined
+#D is undefined
+#G is true
+#H is true
+#K is undefined
+#L is undefined
+#N is false

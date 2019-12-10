@@ -1,0 +1,7 @@
+A=>B|C
+B|C|G=>D
+=A
+?D
+
+#D is true
+#BCG is undefined
