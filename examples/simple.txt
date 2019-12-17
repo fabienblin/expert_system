@@ -9,4 +9,4 @@ G^H=>I
 #C is true
 #F is true
 #I is false
-#K is undefined
+#K is false
