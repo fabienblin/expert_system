@@ -23,6 +23,7 @@ func main() {
 
 			// printNode(env.tree, 8)
 			engine()
+			printNode(env.tree, 8)
 		}
 	} else if len(os.Args) == 2 { // file ruleset
 		initEnv()
@@ -33,9 +34,9 @@ func main() {
 
 		// printNode(env.tree, 8)
 		engine()
+		printNode(env.tree, 8)
 	} else { // error
 		log.Fatal("Error. Retry later ...\n")
 		os.Exit(1)
 	}
-	printNode(env.tree, 8)
 }
