@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 14:34:50 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/12/19 12:56:49 by jmonneri         ###   ########.fr       */
+/*   Updated: 2019/12/19 19:12:32 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,150 +17,156 @@ import (
 	"fmt"
 )
 
-func setToTrueF(node *infTree) (bool, error) {
+func setToTrueF(node *infTree) error {
 	if node.fact.value == falseF {
-		return false, errors.New("Contradiction dans les données")
+		return errors.New("Contradiction dans les données")
 	} else if !node.fact.isKnown {
 		node.fact.isKnown = true
 		node.fact.value = trueF
-		return true, nil
 	}
-	return false, nil
+	return nil
 }
 
-func setToFalseF(node *infTree) (bool, error) {
+func setToFalseF(node *infTree) error {
 	if node.fact.value == trueF {
-		return false, errors.New("Contradiction dans les données")
+		return errors.New("Contradiction dans les données")
 	} else if !node.fact.isKnown {
 		node.fact.isKnown = true
 		node.fact.value = falseF
-		return true, nil
 	}
-	return false, nil
+	return nil
 }
 
-func setToUnknownF(node *infTree) (bool, error) {
-	if node.fact.isKnown {
-		return false, errors.New("Contradiction dans les données") //!! a enlever
-	} else if node.fact.value != unknownF {
+func setToUnknownF(node *infTree) error {
+	if !node.fact.isKnown && node.fact.value != unknownF {
 		node.fact.value = unknownF
-		return true, nil
 	}
-	return false, nil
+	return nil
 }
 
-func notFunc(node *infTree, checked []string) (bool, error) {
+func notFunc(node *infTree, checked []string) error {
 	fmt.Printf("notFunc\n")
-	var err error = nil
-	if !node.right.fact.isKnown {
-		if _, err = forwardChaining(node.right, checked); err != nil {
-			return false, err
+
+	if node.fact.isKnown {
+		if node.fact.value == trueF {
+			return setToFalseF(node.right)
 		}
+		return setToTrueF(node.right)
 	}
-	// On sépare les 2 if car la ligne du dessus risque de changer node.right.fact.isKnown
-	if node.right.fact.isKnown && err == nil {
+	if node.right.fact.isKnown {
 		if node.right.fact.value == trueF {
 			return setToFalseF(node)
 		}
 		return setToTrueF(node)
 	}
-	return false, err
+	return nil
 }
 
-func andFunc(node *infTree, checked []string) (bool, error) {
+func andFunc(node *infTree, checked []string) error {
 	fmt.Printf("andFunc\n")
 	leftFact := node.left.fact
 	rightFact := node.right.fact
 
-	// Dans les cas ci-dessous on a besoin d' informations donc on relance le forward pour aller les chercher
-	if !leftFact.isKnown && !rightFact.isKnown {
-		if _, err := forwardChaining(node.right, checked); err != nil {
-			return false, err
+	if node.fact.value == trueF {
+		err := setToTrueF(node.left)
+		if err == nil {
+			err = setToTrueF(node.right)
 		}
-		if _, err := forwardChaining(node.left, checked); err != nil {
-			return false, err
-		}
-	} else if !leftFact.isKnown && rightFact.value == trueF {
-		if _, err := forwardChaining(node.left, checked); err != nil {
-			return false, err
-		}
-	} else if !rightFact.isKnown && leftFact.value == trueF {
-		if _, err := forwardChaining(node.right, checked); err != nil {
-			return false, err
+		return err
+	}
+	if node.fact.value == falseF {
+		if rightFact.value == trueF {
+			return setToFalseF(node.left)
+		} else if leftFact.value == trueF {
+			return setToFalseF(node.right)
 		}
 	}
-	// Traitement des donnees recues
 	if leftFact.value == falseF || rightFact.value == falseF {
 		return setToFalseF(node)
 	}
 	if leftFact.value == trueF && rightFact.value == trueF {
 		return setToTrueF(node)
 	}
-	return false, nil
+	return nil
 }
 
-func orFunc(node *infTree, checked []string) (bool, error) {
+func orFunc(node *infTree, checked []string) error {
 	fmt.Printf("orFunc\n")
 	leftFact := node.left.fact
 	rightFact := node.right.fact
 
-	// Recherche d' informations manquantes
-	if !leftFact.isKnown && rightFact.value != trueF {
-		if _, err := forwardChaining(node.left, checked); err != nil {
-			return false, err
-		}
-	}
-	if !rightFact.isKnown && leftFact.value != trueF {
-		if _, err := forwardChaining(node.right, checked); err != nil {
-			return false, err
-		}
-	}
-	// Traitement des informations
 	if leftFact.value == trueF || rightFact.value == trueF {
 		return setToTrueF(node)
-	} else if leftFact.value == falseF && rightFact.value == falseF {
-		return setToFalseF(node)
+	} else if node.fact.value == falseF {
+		err := setToFalseF(node.left)
+		if err == nil {
+			err = setToFalseF(node.right)
+		}
+		return err
+	} else if node.fact.value == trueF {
+		if rightFact.value == falseF {
+			return setToTrueF(node.left)
+		} else if leftFact.value == falseF {
+			return setToTrueF(node.right)
+		}
+		setToUnknownF(node.left)
+		setToUnknownF(node.right)
 	}
-	return false, nil
+	return nil
 }
 
-func xorFunc(node *infTree, checked []string) (bool, error) {
+func xorFunc(node *infTree, checked []string) error {
 	fmt.Printf("xorFunc\n")
 	leftFact := node.left.fact
 	rightFact := node.right.fact
 
-	// Seek
-	if !leftFact.isKnown {
-		if _, err := forwardChaining(node.left, checked); err != nil {
-			return false, err
+	if node.fact.value == trueF {
+		if leftFact.isKnown {
+			if leftFact.value == falseF {
+				return setToTrueF(node.right)
+			}
+			return setToFalseF(node.right)
+		} else if rightFact.isKnown {
+			if rightFact.value == falseF {
+				return setToTrueF(node.left)
+			}
+			return setToFalseF(node.left)
 		}
-	}
-	if !rightFact.isKnown {
-		if _, err := forwardChaining(node.right, checked); err != nil {
-			return false, err
+		setToUnknownF(node.left)
+		setToUnknownF(node.right)
+	} else if node.fact.value == falseF {
+		if leftFact.isKnown {
+			if leftFact.value == falseF {
+				return setToFalseF(node.right)
+			}
+			return setToTrueF(node.right)
+		} else if rightFact.isKnown {
+			if rightFact.value == falseF {
+				return setToFalseF(node.left)
+			}
+			return setToTrueF(node.left)
 		}
+		setToUnknownF(node.left)
+		setToUnknownF(node.right)
 	}
-	// Treatment
 	if leftFact.isKnown && (leftFact.value == rightFact.value) {
 		return setToFalseF(node)
-	} else if leftFact.isKnown && rightFact.isKnown && (leftFact.value != rightFact.value) {
+	} else if leftFact.isKnown && rightFact.isKnown {
 		return setToTrueF(node)
 	}
-	return false, nil
+	return nil
 }
 
 func impFunc(node *infTree, checked []string) (bool, error) {
 	fmt.Printf("impFunc\n")
 
-	// SEEK
 	if !node.left.fact.isKnown {
-		if _, err := forwardChaining(node.left, checked); err != nil {
+		if err := resolve(node.left, node, checked); err != nil {
 			return false, err
 		}
 	}
-	// TREAT
 	if node.left.fact.value == trueF {
-		return setToTrueF(node.right)
+		return false, setToTrueF(node.right)
 	}
 	return false, nil
 }
@@ -168,7 +174,6 @@ func impFunc(node *infTree, checked []string) (bool, error) {
 func ioiFunc(node *infTree, checked []string) (bool, error) {
 	fmt.Printf("ioiFunc\n")
 
-	// SEEK
 	if !node.left.fact.isKnown && !node.right.fact.isKnown {
 		if _, err := forwardChaining(node.left, checked); err != nil {
 			return false, err
@@ -180,15 +185,15 @@ func ioiFunc(node *infTree, checked []string) (bool, error) {
 	// TREAT
 	if node.left.fact.isKnown {
 		if node.left.fact.value == trueF {
-			return setToTrueF(node.right)
+			return false, setToTrueF(node.right)
 		}
-		return setToFalseF(node.right)
+		return false, setToFalseF(node.right)
 	}
 	if node.right.fact.isKnown {
 		if node.right.fact.value == trueF {
-			return setToTrueF(node.left)
+			return false, setToTrueF(node.left)
 		}
-		return setToFalseF(node.left)
+		return false, setToFalseF(node.left)
 	}
 	return false, nil
 }

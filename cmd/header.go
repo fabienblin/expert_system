@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:04 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/11/11 19:31:07 by jmonneri         ###   ########.fr       */
+/*   Updated: 2019/12/19 16:26:18 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ var env struct {
 	tree         *infTree
 }
 
-var opeFunc = map[string]func(*infTree) (bool, error){
+var opeFunc = map[string]func(*infTree) error{
 	not: notFunc,
 	and: andFunc,
 	or:  orFunc,
