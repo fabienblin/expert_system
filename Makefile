@@ -6,7 +6,7 @@
 #    By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/30 17:57:13 by jmonneri          #+#    #+#              #
-#    Updated: 2019/11/26 20:01:31 by jmonneri         ###   ########.fr        #
+#    Updated: 2019/11/27 03:36:35 by jmonneri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 GONAME = expert_system
 
-TEST_FILE = operators/and2.txt
+TEST_FILE = other/corr1.txt
 
 GOPATH = $(shell pwd)
 GOBIN = $(GOPATH)/bin
