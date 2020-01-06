@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:04 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/12/19 16:26:18 by jmonneri         ###   ########.fr       */
+/*   Updated: 2019/12/20 18:33:41 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,15 @@ var env struct {
 	tree         *infTree
 }
 
-var opeFunc = map[string]func(*infTree) error{
-	not: notFunc,
-	and: andFunc,
-	or:  orFunc,
-	xor: xorFunc,
-	ioi: ioiFunc,
-	imp: impFunc,
+var opeFunc map[string]func(*infTree, *infTree, []string) error
+
+func init() {
+	opeFunc = map[string]func(*infTree, *infTree, []string) error{
+		and: andFunc,
+		not: notFunc,
+		xor: xorFunc,
+		or:  orFunc,
+		imp: impFunc,
+		ioi: ioiFunc,
+	}
 }

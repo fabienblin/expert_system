@@ -6,7 +6,7 @@
 #    By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/30 17:57:13 by jmonneri          #+#    #+#              #
-#    Updated: 2019/11/27 03:36:35 by jmonneri         ###   ########.fr        #
+#    Updated: 2019/12/20 20:29:08 by jmonneri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ install:
 run: all
 	@$(EXECPATH) ./examples/$(TEST_FILE)
 
-fclean:s
+fclean:
 	@echo "Cleaning"
 	@$(GOENV) go clean
 	@rm -rf ./bin/

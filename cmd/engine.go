@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:51:53 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/12/19 18:46:16 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/06 15:22:09 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ import (
 	"fmt"
 	"strings"
 )
+
+var i int = 0 // !!!! a enlever c du debug
 
 func engine() {
 	fmt.Printf("Engine:\n")
@@ -37,42 +39,69 @@ func searchQueries(queries []string) (bool, error) {
 }
 
 func backwardChaining(query *fact, checked []string) error {
+	i++
+	fmt.Printf("%*sBackward Chaining:\n", i, " ")
 	// On check que le fact n'ait pas déjà été demandé (anti-boucle).
+	fmt.Printf("%*sBackward Chaining: query searched: %s\n", i, " ", query.op)
 	if stringInSlice(query.op, checked) {
+		fmt.Printf("%*sBackward Chaining: abort because of already checked\n", i, " ")
+		i--
 		return nil
 	}
 	checked = append(checked, query.op)
 	// On trouve les règles définissant la query
 	for _, rule := range env.trees {
 		if node := digInRule(query, rule); node != nil {
+			fmt.Printf("%*sBackward Chaining: rule found: \n", i, " ")
+			printNode(rule, 4)
 			err := resolve(node, node, checked) // !! TESTER QUE CELA A FONCTIONNE
+			if err != nil {
+				i--
+				return err
+			}
+			printNode(rule, 4)
+			fmt.Printf("%*sBackward Chaining: solved: %s = %d\n", i, " ", query.op, query.value)
 		}
 	}
+	i--
 	return nil
 }
 
 func digInRule(fact *fact, node *infTree) *infTree {
+	i++
 	if strings.Contains(factSymbol, node.fact.op) {
-		if node.fact.op == fact.op {
+		if node.fact == fact {
+			i--
 			return node
 		}
+		i--
 		return nil
 	}
 	if node.fact.op != imp && node.left != nil {
-		digInRule(fact, node.left)
+		if node := digInRule(fact, node.left); node != nil {
+			i--
+			return node
+		}
 	}
+	i--
 	return digInRule(fact, node.right)
 }
 
 func resolve(node *infTree, from *infTree, checked []string) error {
+	i++
+	fmt.Printf("%*sResolve:\n", i, " ")
 	var err error = nil
 
-	if node == nil {
+	if node == nil || node.fact.isKnown {
+		fmt.Printf("%*sResolve: node is nil or known\n", i, " ")
+		i--
 		return nil
 	}
+	fmt.Printf("%*sResolve: node = %s = %d\n", i, " ", node.fact.op, node.fact.value)
 	if from != node.head && !(node.fact.op == imp || node.fact.op == ioi) {
 		err = resolve(node.head, node, checked)
 		if node == from || err != nil {
+			i--
 			return err
 		}
 	}
@@ -80,16 +109,20 @@ func resolve(node *infTree, from *infTree, checked []string) error {
 		if !node.fact.isKnown {
 			return backwardChaining(node.fact, checked)
 		}
+		i--
 		return nil
 	}
 	if from == node.head {
-		err = resolve(node.left, node, checked)
-		err = resolve(node.right, node, checked)
+		err := resolve(node.left, node, checked)
+		if err == nil {
+			err = resolve(node.right, node, checked)
+		}
+		if err != nil {
+			i--
+			return err
+		}
 	}
 	// On lance la fonction de l'operateur
-	err = opeFunc[node.fact.op](node)
-	if err != nil {
-		return err
-	}
-	return err
+	i--
+	return opeFunc[node.fact.op](node, from, checked)
 }
