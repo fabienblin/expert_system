@@ -5,10 +5,10 @@ M=>!N
 =ABEFIJM
 ?CDGHKLN
 
-#C is undefined
-#D is undefined
-#G is true
-#H is true
-#K is undefined
-#L is undefined
-#N is false
+# solution C = -2
+# solution D = -2
+# solution G = 1
+# solution H = 1
+# solution K = -2
+# solution L = -2
+# solution N = 0

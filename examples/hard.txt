@@ -1,8 +1,8 @@
 A+B=>C
 C|E=>F
-D^W=>F
+E^A=>F
 
-=ABED
+=ABE
 ?CF
 
 #C is true

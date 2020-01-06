@@ -6,7 +6,8 @@ G^H=>I
 =ABDEGHJ
 ?CFIK
 
-#C is true
-#F is true
-#I is false
-#K is false
+
+# solution C = 1
+# solution F = 1
+# solution I = 0
+# solution K = 0

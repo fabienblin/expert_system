@@ -9,6 +9,6 @@ O<=>!O
 =
 ?KPO
 
-#K is false
-#P is undefined
-#O has no solution
+# solution K = 0
+# solution P = -1
+# solution O = -1
