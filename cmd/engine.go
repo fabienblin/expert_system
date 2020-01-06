@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:51:53 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/06 15:22:09 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/06 15:38:28 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ func backwardChaining(query *fact, checked []string) error {
 				return err
 			}
 			printNode(rule, 4)
-			fmt.Printf("%*sBackward Chaining: solved: %s = %d\n", i, " ", query.op, query.value)
+			fmt.Printf("# solution %s = %d\n", query.op, query.value)
 		}
 	}
 	i--
