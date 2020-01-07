@@ -3,5 +3,5 @@ A=>!B
 =
 ?A
 
-#no solution
+#no solutio
 # solution A = -1

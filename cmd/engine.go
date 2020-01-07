@@ -1,15 +1,15 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   engine.go                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/30 17:51:53 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/06 15:38:28 by jmonneri         ###   ########.fr       */
-/*                                                                            */
+/*                                                          LE - /            */
+/*                                                              /             */
+/*   engine.go                                        .::    .:/ .      .::   */
+/*                                                 +:+:+   +:    +:  +:+:+    */
+/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*                                                 #+#   #+    #+    #+#      */
+/*   Created: 2019/10/30 17:51:53 by jmonneri     #+#   ##    ##    #+#       */
+/*   Updated: 2020/01/07 15:32:07 by jojomoon    ###    #+. /#+    ###.fr     */
+/*                                                         /                  */
+/*                                                        /                   */
 /* ************************************************************************** */
-
 package main
 
 import (
@@ -34,6 +34,7 @@ func searchQueries(queries []string) (bool, error) {
 		if err := backwardChaining(env.factList[query], []string{}); err != nil {
 			return false, err
 		}
+		fmt.Printf("# solution %s = %d\n", env.factList[query].op, env.factList[query].value)
 	}
 	return true, nil
 }
@@ -60,7 +61,6 @@ func backwardChaining(query *fact, checked []string) error {
 				return err
 			}
 			printNode(rule, 4)
-			fmt.Printf("# solution %s = %d\n", query.op, query.value)
 		}
 	}
 	i--

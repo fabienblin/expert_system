@@ -1,15 +1,15 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   opeFuncs.go                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/11 14:34:50 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/12/20 20:10:23 by jmonneri         ###   ########.fr       */
-/*                                                                            */
+/*                                                          LE - /            */
+/*                                                              /             */
+/*   opeFuncs.go                                      .::    .:/ .      .::   */
+/*                                                 +:+:+   +:    +:  +:+:+    */
+/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*                                                 #+#   #+    #+    #+#      */
+/*   Created: 2019/11/11 14:34:50 by jmonneri     #+#   ##    ##    #+#       */
+/*   Updated: 2020/01/07 15:51:41 by jojomoon    ###    #+. /#+    ###.fr     */
+/*                                                         /                  */
+/*                                                        /                   */
 /* ************************************************************************** */
-
 package main
 
 import (
@@ -146,6 +146,9 @@ func orFunc(node *infTree, from *infTree, checked []string) error {
 				i--
 				return setToTrueF(node.right)
 			}
+			setToUnknownF(node.left)
+			setToUnknownF(node.right)
+		} else if node.fact.value == unknownF {
 			setToUnknownF(node.left)
 			setToUnknownF(node.right)
 		}
