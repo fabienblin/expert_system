@@ -11,9 +11,9 @@ do
 	echo $PROGRAM
 	echo $SOLUTION
 	if [ "$SOLUTION" = "$PROGRAM" ]; then
-		echo OK
+		echo "\033[32mOK\033[0m"
 	else
-		echo NOPE
+		echo "\033[31mNOPE\033[0m"
 	fi;
 done
 

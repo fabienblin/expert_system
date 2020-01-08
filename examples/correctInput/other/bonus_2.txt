@@ -5,7 +5,7 @@ D | E => F
 =A
 ?FBCDE
 
-# solution F = -1
+# solution F = 0
 # solution B = 0
 # solution C = 0
 # solution D = -2

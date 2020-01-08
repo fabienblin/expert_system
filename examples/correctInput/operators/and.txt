@@ -4,4 +4,4 @@ D + E => F
 ?CF
 
 # solution C = 1
-# solution F = -1
+# solution F = 0

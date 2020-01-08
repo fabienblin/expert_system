@@ -5,4 +5,4 @@ B => C
 =DE
 ?A
 
-# solution A = -1
+# solution A = 0

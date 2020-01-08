@@ -12,5 +12,5 @@ N => M
 
 # solution A = 1
 # solution F = 1
-# solution K = -1
+# solution K = 0
 # solution P = 1

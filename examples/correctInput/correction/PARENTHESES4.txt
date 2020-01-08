@@ -4,4 +4,4 @@ A | B + C => E
 =C
 ?E
 
-# solution E = -1
+# solution E = 0

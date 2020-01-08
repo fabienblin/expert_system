@@ -1,15 +1,15 @@
 /* ************************************************************************** */
-/*                                                          LE - /            */
-/*                                                              /             */
-/*   engine.go                                        .::    .:/ .      .::   */
-/*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
-/*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/10/30 17:51:53 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/01/07 15:32:07 by jojomoon    ###    #+. /#+    ###.fr     */
-/*                                                         /                  */
-/*                                                        /                   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   engine.go                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/30 17:51:53 by jmonneri          #+#    #+#             */
+/*   Updated: 2020/01/08 16:00:25 by jmonneri         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
+
 package main
 
 import (
@@ -55,7 +55,7 @@ func backwardChaining(query *fact, checked []string) error {
 		if node := digInRule(query, rule); node != nil {
 			fmt.Printf("%*sBackward Chaining: rule found: \n", i, " ")
 			printNode(rule, 4)
-			err := resolve(node, node, checked) // !! TESTER QUE CELA A FONCTIONNE
+			err := resolve(node, node, checked)
 			if err != nil {
 				i--
 				return err
@@ -64,6 +64,10 @@ func backwardChaining(query *fact, checked []string) error {
 		}
 	}
 	i--
+	if query.value == defaultF {
+		query.value = falseF
+		query.isKnown = true
+	}
 	return nil
 }
 
