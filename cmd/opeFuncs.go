@@ -1,15 +1,15 @@
 /* ************************************************************************** */
-/*                                                          LE - /            */
-/*                                                              /             */
-/*   opeFuncs.go                                      .::    .:/ .      .::   */
-/*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
-/*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/11/11 14:34:50 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/01/07 15:51:41 by jojomoon    ###    #+. /#+    ###.fr     */
-/*                                                         /                  */
-/*                                                        /                   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   opeFuncs.go                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/11 14:34:50 by jmonneri          #+#    #+#             */
+/*   Updated: 2020/01/08 19:48:10 by jmonneri         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
+
 package main
 
 import (
@@ -19,7 +19,7 @@ import (
 
 func setToTrueF(node *infTree) error {
 	if node.fact.value == falseF {
-		return errors.New("Contradiction dans les données")
+		return errors.New("Error: Contradiction in the facts")
 	} else if !node.fact.isKnown {
 		node.fact.isKnown = true
 		node.fact.value = trueF
@@ -29,7 +29,7 @@ func setToTrueF(node *infTree) error {
 
 func setToFalseF(node *infTree) error {
 	if node.fact.value == trueF {
-		return errors.New("Contradiction dans les données")
+		return errors.New("Error: Contradiction in the facts")
 	} else if !node.fact.isKnown {
 		node.fact.isKnown = true
 		node.fact.value = falseF
