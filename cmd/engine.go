@@ -2,24 +2,34 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"os"
 )
 
 /*
  * Run the inference engine
  */
-func engine() {
+func engine(flagVerbose bool, flagForward bool) {
 	//forwardInfer(env.tree, false)
-	for _, query := range env.queries {
-		fmt.Print("")
-		backwardInfer(env.tree, query, false, false)
-		if env.factList[query].isTrue && !env.factList[query].isKnown {
-			fmt.Printf("%s is ambiguous\n", query)
-		} else if !env.factList[query].isKnown {
-			fmt.Printf("%s is unknown\n", query)
-		} else {
-			fmt.Printf("%s is %v\n", query, env.factList[query].isTrue)
+	if flagForward {
+		forwardInfer(env.tree, false)
+		if flagVerbose {
+			printNode(env.tree, 4)
+		}
+	} else {
+		for _, query := range env.queries {
+
+			backwardInfer(env.tree, query, false, false)
+
+			if env.factList[query].isTrue && !env.factList[query].isKnown {
+				fmt.Printf("%s is ambiguous\n", query)
+			} else if !env.factList[query].isKnown {
+				fmt.Printf("%s is unknown\n", query)
+			} else {
+				fmt.Printf("%s is %v\n", query, env.factList[query].isTrue)
+			}
+
+			if flagVerbose {
+				printNode(env.tree, 4)
+			}
 		}
 	}
 }
@@ -66,9 +76,6 @@ func backwardInfer(current *infTree, query string, implies bool, depend bool) {
 						current.fact.isTrue = !current.head.fact.isTrue
 						current.fact.isKnown = current.head.fact.isKnown
 					}
-				} else if _, ok := env.factList[current.fact.op]; ok && current.fact.isKnown == true && current.head.fact.isKnown == true && current.head.fact.isTrue == false {
-					log.Printf("Paradox in fact definition of %v\n", current.fact.op)
-					os.Exit(1)
 				}
 			} else { // (2.1 and 2.2) if => or <=>
 				if current.fact.op == imp {
@@ -95,7 +102,7 @@ func backwardInfer(current *infTree, query string, implies bool, depend bool) {
 				backwardInfer(current.left, query, implies, depend)
 			}
 		} else { // (1) start here
-			// fmt.Print(current.fact.op, query, implies, depend, "\n")
+			fmt.Print(current.fact.op, query, implies, depend, "\n")
 			if current.fact.op == "&" {
 				backwardInfer(current.right, query, implies, depend)
 				backwardInfer(current.left, query, implies, depend)
@@ -127,9 +134,6 @@ func forwardInfer(current *infTree, implies bool) {
 			if current.fact.isKnown == false && current.head.fact.isKnown == true {
 				current.fact.isTrue = current.head.fact.isTrue
 				current.fact.isKnown = current.head.fact.isKnown
-			} else if _, ok := env.factList[current.fact.op]; ok && current.fact.isKnown == true && current.head.fact.isKnown == true && current.head.fact.isTrue == false {
-				log.Printf("Paradox in fact definition of %v\n", current.fact.op)
-				os.Exit(1)
 			}
 		} else if and == current.fact.op { // current is a +
 			forwardInfer(current.right, implies)
