@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:16 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/10/30 17:53:05 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/09 17:43:04 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@ package main
 
 func main() {
 	parse()
-	printNode(env.tree, 4)
+	printNode(env.tree, 4, env.tree)
 	engine()
 }

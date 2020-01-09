@@ -6,21 +6,21 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:51:53 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/08 16:00:25 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/09 20:25:37 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 package main
 
+// !!! sauvegarde jojo de cote, fusionne master sur jojo puis jojo-backward sur jojo puis le forward qu'on a sauvegardé de coté tu l' implémente dans le tout
+// !!! faire le log du raisonnement (stringifier bufferiser puis printer)
+// !!!
 import (
 	"fmt"
 	"strings"
 )
 
-var i int = 0 // !!!! a enlever c du debug
-
 func engine() {
-	fmt.Printf("Engine:\n")
 	worked, err := searchQueries(env.queries)
 	if !worked {
 		outputError(err)
@@ -32,7 +32,7 @@ func engine() {
 func searchQueries(queries []string) (bool, error) {
 	for _, query := range queries {
 		if err := backwardChaining(env.factList[query], []string{}); err != nil {
-			return false, err
+			fmt.Println(err)
 		}
 		fmt.Printf("# solution %s = %d\n", env.factList[query].op, env.factList[query].value)
 	}
@@ -40,30 +40,25 @@ func searchQueries(queries []string) (bool, error) {
 }
 
 func backwardChaining(query *fact, checked []string) error {
-	i++
-	fmt.Printf("%*sBackward Chaining:\n", i, " ")
 	// On check que le fact n'ait pas déjà été demandé (anti-boucle).
-	fmt.Printf("%*sBackward Chaining: query searched: %s\n", i, " ", query.op)
 	if stringInSlice(query.op, checked) {
-		fmt.Printf("%*sBackward Chaining: abort because of already checked\n", i, " ")
-		i--
 		return nil
 	}
 	checked = append(checked, query.op)
 	// On trouve les règles définissant la query
+	if verbose {
+		fmt.Printf("Searching for queries defining %s\n", query.op)
+	}
 	for _, rule := range env.trees {
 		if node := digInRule(query, rule); node != nil {
-			fmt.Printf("%*sBackward Chaining: rule found: \n", i, " ")
-			printNode(rule, 4)
+			fmt.Printf("Rule found:\n")
+			printNode(rule, 4, nil)
 			err := resolve(node, node, checked)
 			if err != nil {
-				i--
 				return err
 			}
-			printNode(rule, 4)
 		}
 	}
-	i--
 	if query.value == defaultF {
 		query.value = falseF
 		query.isKnown = true
@@ -72,40 +67,28 @@ func backwardChaining(query *fact, checked []string) error {
 }
 
 func digInRule(fact *fact, node *infTree) *infTree {
-	i++
 	if strings.Contains(factSymbol, node.fact.op) {
 		if node.fact == fact {
-			i--
 			return node
 		}
-		i--
 		return nil
 	}
 	if node.fact.op != imp && node.left != nil {
 		if node := digInRule(fact, node.left); node != nil {
-			i--
 			return node
 		}
 	}
-	i--
 	return digInRule(fact, node.right)
 }
 
 func resolve(node *infTree, from *infTree, checked []string) error {
-	i++
-	fmt.Printf("%*sResolve:\n", i, " ")
 	var err error = nil
-
 	if node == nil || node.fact.isKnown {
-		fmt.Printf("%*sResolve: node is nil or known\n", i, " ")
-		i--
 		return nil
 	}
-	fmt.Printf("%*sResolve: node = %s = %d\n", i, " ", node.fact.op, node.fact.value)
 	if from != node.head && !(node.fact.op == imp || node.fact.op == ioi) {
 		err = resolve(node.head, node, checked)
 		if node == from || err != nil {
-			i--
 			return err
 		}
 	}
@@ -113,7 +96,6 @@ func resolve(node *infTree, from *infTree, checked []string) error {
 		if !node.fact.isKnown {
 			return backwardChaining(node.fact, checked)
 		}
-		i--
 		return nil
 	}
 	if from == node.head {
@@ -122,11 +104,9 @@ func resolve(node *infTree, from *infTree, checked []string) error {
 			err = resolve(node.right, node, checked)
 		}
 		if err != nil {
-			i--
 			return err
 		}
 	}
 	// On lance la fonction de l'operateur
-	i--
 	return opeFunc[node.fact.op](node, from, checked)
 }

@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:04 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/12/20 18:33:41 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/09 19:56:46 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ const (
 	falseF      int    = 0
 	defaultF    int    = -1
 	unknownF    int    = -2
+	verbose     bool   = true
 )
 
 type nodeInfo int
