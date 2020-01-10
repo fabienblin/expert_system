@@ -6,15 +6,12 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:51:53 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/10 19:21:48 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/10 19:35:31 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 package main
 
-// !!! sauvegarde jojo de cote, fusionne master sur jojo puis jojo-backward sur jojo puis le forward qu'on a sauvegardé de coté tu l' implémente dans le tout
-// !!! faire le log du raisonnement (stringifier bufferiser puis printer)
-// !!!
 import (
 	"fmt"
 	"strings"
@@ -23,12 +20,16 @@ import (
 /*
  * Run the inference engine
  */
-func engine() {
-	worked, err := searchQueries(env.queries)
-	if !worked {
-		outputError(err)
+func engine(flagVerbose bool, flagForward bool) {
+	if flagForward {
+		//forwardInfer(env.tree, false)
 	} else {
-		output()
+		worked, err := searchQueries(env.queries)
+		if !worked {
+			outputError(err)
+		} else {
+			output()
+		}
 	}
 }
 

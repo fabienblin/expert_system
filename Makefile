@@ -27,7 +27,7 @@ all: $(EXECPATH)
 $(EXECPATH): $(GOFILES)
 	@printf "0️⃣  Building $(GOFILES) to ./bin \n"
 	@$(GOENV) go build -o $(EXECPATH) $(GOFILES)
-	@printf "✅  Builded! ✅\n"
+	@printf "✅  Built! ✅\n"
 
 get:
 	@$(GOENV) go get .
