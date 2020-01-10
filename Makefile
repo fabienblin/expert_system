@@ -6,15 +6,15 @@
 #    By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/30 17:57:13 by jmonneri          #+#    #+#              #
-#    Updated: 2019/11/26 20:01:31 by jmonneri         ###   ########.fr        #
+#    Updated: 2020/01/06 18:26:17 by jmonneri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY: all get install run fclean
+.PHONY: all get install run fclean tests
 
 GONAME = expert_system
 
-TEST_FILE = operators/and2.txt
+TEST_FILE = other/corr1.txt
 
 GOPATH = $(shell pwd)
 GOBIN = $(GOPATH)/bin
@@ -35,10 +35,16 @@ get:
 install:
 	@$(GOENV) go install $(GOFILES) 
 
+tests: all
+	@$(EXECPATH) ./examples/$(filter-out $@,$(MAKECMDGOALS))
+
 run: all
 	@$(EXECPATH) ./examples/$(TEST_FILE)
+	
+%:
+	@:
 
-fclean:s
+fclean:
 	@echo "Cleaning"
 	@$(GOENV) go clean
 	@rm -rf ./bin/

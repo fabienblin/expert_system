@@ -1,0 +1,16 @@
+A<=>C+D
+A<=>E|F
+A|G<=>A|H
+A+I<=>A+J
+
+=A
+?CDEFGHIJ
+
+# solution C = 1
+# solution D = 1
+# solution E = -2
+# solution F = -2
+# solution G = -2
+# solution H = -2
+# solution I = 0
+# solution J = 0

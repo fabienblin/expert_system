@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:51:41 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/11/26 18:29:56 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/09 17:30:42 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,5 @@ func outputError(err error) {
 }
 
 func output() {
-	printNode(env.tree, 4)
 	fmt.Printf("Ca a l'air de marcher")
 }

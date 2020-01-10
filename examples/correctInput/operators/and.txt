@@ -1,0 +1,7 @@
+A + B => C
+D + E => F
+=ABD
+?CF
+
+# solution C = 1
+# solution F = 0
