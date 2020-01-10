@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:26 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/10 19:39:01 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/11 00:18:00 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ func parse() {
 
 /*
  * Parse file and initialize the env global variable
- * !! UNUSED !!
  */
 func parseFile(fileName string) {
 	var line string
@@ -63,9 +62,6 @@ func parseFile(fileName string) {
 		log.Fatal("Incomplete data from file.\n")
 		os.Exit(1)
 	}
-
-	initAllFacts()
-	buildTree()
 }
 
 /*
@@ -126,6 +122,17 @@ func parseLine(line string) {
  */
 func initAllFacts() {
 
+	// list from query facts
+	for _, f := range env.queries {
+		if _, ok := env.factList[string(f)]; !ok {
+			env.factList[string(f)] = newFact()
+		} else {
+			env.factList[string(f)].op = string(f)
+			env.factList[string(f)].isKnown = false
+			env.factList[string(f)].value = defaultF
+		}
+	}
+
 	// list from statement facts
 	for _, rule := range env.rules {
 		for _, f := range rule {
@@ -134,6 +141,8 @@ func initAllFacts() {
 					env.factList[string(f)] = newFact()
 				}
 				env.factList[string(f)].op = string(f)
+				env.factList[string(f)].isKnown = false
+				env.factList[string(f)].value = falseF
 			}
 		}
 	}
@@ -151,15 +160,4 @@ func initAllFacts() {
 
 	}
 
-	// list from query facts
-	for _, f := range env.queries {
-		if _, ok := env.factList[string(f)]; !ok {
-			//env.factList[string(f)] = newFact()
-			fmt.Printf("Warning : can't query unknown fact %q.\n", f)
-		} else {
-			env.factList[string(f)].op = string(f)
-			env.factList[string(f)].isKnown = false
-			env.factList[string(f)].value = falseF
-		}
-	}
 }

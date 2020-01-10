@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:16 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/10 19:36:19 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/10 23:53:38 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ func main() {
 		initAllFacts()
 		buildTree()
 
+		printNode(env.tree, 4, nil)
 		engine(*flagVerbose, *flagForward)
-		printNode(env.tree, 8, nil)
 	} else { // error
 		log.Fatal("Error. Retry later ...\n")
 		os.Exit(1)

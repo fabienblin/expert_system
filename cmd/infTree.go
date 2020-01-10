@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:09 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/10 19:21:23 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/11 00:10:07 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ func buildTree() {
 		var jointInfTree = newInfTree()
 		var jointFact = newFact()
 		jointInfTree.fact = jointFact
-		jointFact.op = "&"
+		jointFact.op = "+"
 
 		jointInfTree.left = t
 		jointInfTree.left.head = jointInfTree
