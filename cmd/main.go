@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:16 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/10 19:21:13 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/10 19:24:09 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@ func main() {
 			initAllFacts()
 			buildTree()
 
-			// printNode(env.tree, 8)
 			engine()
-			printNode(env.tree, 8)
+			printNode(env.tree, 8, nil)
 		}
 	} else if len(os.Args) == 2 { // file ruleset
 		initEnv()
@@ -44,9 +43,8 @@ func main() {
 		initAllFacts()
 		buildTree()
 
-		// printNode(env.tree, 8)
 		engine()
-		printNode(env.tree, 8)
+		printNode(env.tree, 8, nil)
 	} else { // error
 		log.Fatal("Error. Retry later ...\n")
 		os.Exit(1)
