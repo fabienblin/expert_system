@@ -1,0 +1,9 @@
+A=>B|C
+B|C|G=>D
+=A
+?DBCG
+
+# solution D = 1
+# solution B = -2
+# solution C = -2
+# solution G = -2

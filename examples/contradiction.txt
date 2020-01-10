@@ -1,0 +1,7 @@
+#A=>B
+A=>!B
+=
+?A
+
+#no solution
+# solution A = -1

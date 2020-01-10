@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:09 by jmonneri          #+#    #+#             */
-/*   Updated: 2019/11/11 18:54:33 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/10 19:16:13 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ func buildTree() {
 		var jointInfTree = newInfTree()
 		var jointFact = newFact()
 		jointInfTree.fact = jointFact
-		jointFact.op = "+"
+		jointFact.op = "&"
 
 		jointInfTree.left = t
 		jointInfTree.left.head = jointInfTree
@@ -174,20 +174,4 @@ func insertNodeItem(current *infTree, item infTree, info nodeInfo) *infTree {
 		current = node
 	}
 	return current
-}
-
-/*
- * Print infTree with variable indetation
- */
-func printNode(node *infTree, indent int) {
-	if node == nil {
-		return
-	}
-	printNode(node.right, indent+4)
-
-	for i := 0; i < indent; i++ {
-		fmt.Printf(" ")
-	}
-	fmt.Printf("%v %d\n", node.fact.op, node.fact.value)
-	printNode(node.left, indent+4)
 }
