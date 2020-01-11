@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:16 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/10 23:53:38 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/11 01:51:20 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ func main() {
 	flagForward := flag.Bool("f", false, "forward mode")
 
 	flag.Parse()
+	verbose = *flagVerbose
 	args := flag.Args()
-
 	if len(args) == 0 { // dynamic ruleset
 		for {
 			initEnv()
@@ -42,8 +42,8 @@ func main() {
 			initAllFacts()
 			buildTree()
 
-			engine(*flagVerbose, *flagForward)
-			printNode(env.tree, 8, nil)
+			printNode(env.tree, 4, nil)
+			engine(*flagForward)
 		}
 	} else if len(args) == 1 { // file ruleset
 
@@ -54,9 +54,9 @@ func main() {
 		buildTree()
 
 		printNode(env.tree, 4, nil)
-		engine(*flagVerbose, *flagForward)
+		engine(*flagForward)
 	} else { // error
-		log.Fatal("Error. Retry later ...\n")
+		log.Fatal("\nUsage: ./bin/expert_system [OPTIONS] [FILE]\n[OPTIONS]: -v = verbose mode ; -f = forward chaining mode\n[FILE]: if not represented, start dynamic mode")
 		os.Exit(1)
 	}
 }

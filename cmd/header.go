@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:04 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/09 19:56:46 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/11 02:03:30 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ const (
 	falseF      int    = 0
 	defaultF    int    = -1
 	unknownF    int    = -2
-	verbose     bool   = true
 )
+
+var verbose bool = false
 
 type nodeInfo int
 
@@ -87,5 +88,18 @@ func init() {
 		or:  orFunc,
 		imp: impFunc,
 		ioi: ioiFunc,
+	}
+}
+
+var opeFuncFor map[string]func(*infTree) (bool, error)
+
+func init() {
+	opeFuncFor = map[string]func(*infTree) (bool, error){
+		and: andFuncFor,
+		not: notFuncFor,
+		xor: xorFuncFor,
+		or:  orFuncFor,
+		imp: impFuncFor,
+		ioi: ioiFuncFor,
 	}
 }

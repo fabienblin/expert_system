@@ -6,7 +6,7 @@
 #    By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/30 17:57:13 by jmonneri          #+#    #+#              #
-#    Updated: 2020/01/06 18:26:17 by jmonneri         ###   ########.fr        #
+#    Updated: 2020/01/11 02:42:21 by jmonneri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,15 @@ install:
 
 tests: all
 	@$(EXECPATH) ./examples/$(filter-out $@,$(MAKECMDGOALS))
+
+testv: all
+	@$(EXECPATH) ./examples/$(filter-out $@,$(MAKECMDGOALS))
+
+testf: all
+	@$(EXECPATH) ./examples/$(filter-out $@,$(MAKECMDGOALS))
+
+script: all
+	@sh tests.sh
 
 run: all
 	@$(EXECPATH) ./examples/$(TEST_FILE)

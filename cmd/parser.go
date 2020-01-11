@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:52:26 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/11 00:18:00 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/11 01:45:02 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ func initAllFacts() {
 				}
 				env.factList[string(f)].op = string(f)
 				env.factList[string(f)].isKnown = false
-				env.factList[string(f)].value = falseF
+				env.factList[string(f)].value = defaultF
 			}
 		}
 	}

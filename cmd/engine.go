@@ -6,7 +6,7 @@
 /*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:51:53 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/10 19:35:31 by jmonneri         ###   ########.fr       */
+/*   Updated: 2020/01/11 02:17:18 by jmonneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,27 +20,23 @@ import (
 /*
  * Run the inference engine
  */
-func engine(flagVerbose bool, flagForward bool) {
+func engine(flagForward bool) {
 	if flagForward {
-		//forwardInfer(env.tree, false)
+		computeTrees()
+		for _, query := range env.queries {
+			if env.factList[query].value == defaultF {
+				env.factList[query].value = falseF
+			}
+			fmt.Printf("# solution %s = %d\n", env.factList[query].op, env.factList[query].value)
+		}
 	} else {
-		worked, err := searchQueries(env.queries)
-		if !worked {
-			outputError(err)
-		} else {
-			output()
+		for _, query := range env.queries {
+			if err := backwardChaining(env.factList[query], []string{}); err != nil {
+				fmt.Println(err)
+			}
+			fmt.Printf("# solution %s = %d\n", env.factList[query].op, env.factList[query].value)
 		}
 	}
-}
-
-func searchQueries(queries []string) (bool, error) {
-	for _, query := range queries {
-		if err := backwardChaining(env.factList[query], []string{}); err != nil {
-			fmt.Println(err)
-		}
-		fmt.Printf("# solution %s = %d\n", env.factList[query].op, env.factList[query].value)
-	}
-	return true, nil
 }
 
 func backwardChaining(query *fact, checked []string) error {
@@ -55,8 +51,10 @@ func backwardChaining(query *fact, checked []string) error {
 	}
 	for _, rule := range env.trees {
 		if node := digInRule(query, rule); node != nil {
-			fmt.Printf("Rule found:\n")
-			printNode(rule, 4, nil)
+			if verbose {
+				fmt.Printf("Rule found:\n")
+				printNode(rule, 4, nil)
+			}
 			err := resolve(node, node, checked)
 			if err != nil {
 				return err
