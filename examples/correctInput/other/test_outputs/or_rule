@@ -1,0 +1,8 @@
+A | B => C  
+D | E => F  
+=ABDH
+?CFIL
+C is true
+F is true
+I is not true
+L is not true

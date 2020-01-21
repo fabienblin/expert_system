@@ -1,0 +1,14 @@
+!(A + B) ^ (D | K) => P 
+X | (A | K ^ Z) => N 
+!T + !X => G 
+!L => M 
+=ADF
+?ADFNGMTX
+A is true
+D is true
+F is true
+N is true
+G is true
+M is true
+T is not true
+X is not true

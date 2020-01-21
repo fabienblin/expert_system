@@ -1,0 +1,8 @@
+A ^ X => D | W
+B + Y => X
+C => !W
+B => T ^ C
+=ABC
+?DT
+D is true
+T is not true

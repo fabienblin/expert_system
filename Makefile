@@ -1,15 +1,15 @@
 # **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/10/30 17:57:13 by jmonneri          #+#    #+#              #
-#    Updated: 2020/01/11 02:42:21 by jmonneri         ###   ########.fr        #
-#                                                                              #
+#                                                           LE - /             #
+#                                                               /              #
+#    Makefile                                         .::    .:/ .      .::    #
+#                                                  +:+:+   +:    +:  +:+:+     #
+#    By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+      #
+#                                                  #+#   #+    #+    #+#       #
+#    Created: 2019/10/30 17:57:13 by jmonneri     #+#   ##    ##    #+#        #
+#    Updated: 2020/01/11 17:10:52 by jojomoon    ###    #+. /#+    ###.fr      #
+#                                                          /                   #
+#                                                         /                    #
 # **************************************************************************** #
-
 .PHONY: all get install run fclean tests
 
 GONAME = expert_system
@@ -39,10 +39,10 @@ tests: all
 	@$(EXECPATH) ./examples/$(filter-out $@,$(MAKECMDGOALS))
 
 testv: all
-	@$(EXECPATH) ./examples/$(filter-out $@,$(MAKECMDGOALS))
+	@$(EXECPATH) -v ./examples/$(filter-out $@,$(MAKECMDGOALS))
 
 testf: all
-	@$(EXECPATH) ./examples/$(filter-out $@,$(MAKECMDGOALS))
+	@$(EXECPATH) -f ./examples/$(filter-out $@,$(MAKECMDGOALS))
 
 script: all
 	@sh tests.sh

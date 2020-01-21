@@ -1,0 +1,19 @@
+B => A 
+D + E => B 
+G + H => F 
+I + J => G 
+G => H 
+L + M => K 
+O + P => L + N 
+N => M 
+=DEIJOP
+?ABFGHKLNM
+A is true
+B is true
+F is true
+G is true
+H is true
+K is true
+L is true
+N is true
+M is true

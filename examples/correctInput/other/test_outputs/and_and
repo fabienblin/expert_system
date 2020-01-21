@@ -1,0 +1,9 @@
+A + B => C + D
+A + Z => Y
+B + D => X
+=AB
+?CDXY
+C is true
+D is true
+X is true
+Y is not true

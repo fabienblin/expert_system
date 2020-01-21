@@ -1,0 +1,32 @@
+P + A => Q
+I ^ K => P
+O => !P
+K + L => O
+D + E + M => N
+L ^ K => M
+I | C => J + !K
+G + A => I
+F => !H
+E => F + (G | H)
+D => E ^ C
+B => !C
+A => B
+=AD
+?ABCDEFGHIJKLMNOPQ
+A is true
+B is true
+C is not true
+D is true
+E is true
+F is true
+G is true
+H is not true
+I is true
+J is true
+K is not true
+L is not true
+M is not true
+N is not true
+O is not true
+P is true
+Q is true

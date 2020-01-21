@@ -1,0 +1,11 @@
+A => B
+(A + B + C | D | B + D | !(C | D) + A => G)
+W => Z
+A + B => I
+(A) + (!B) => C
+(D ^ C) | T + !T + !(A + B) => A
+A + B => (C + H)
+=BD
+?AI
+rules are not correctly formatted:
+(A + B + C | D | B + D | !(C | D) + A => G)

@@ -1,0 +1,7 @@
+!A => B
+!C => D
+=AE
+?BDF
+B is not true
+D is true
+F is not true

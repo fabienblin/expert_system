@@ -1,0 +1,6 @@
+A + B <=> C | D
+=D
+?ABC
+A is true
+B is true
+C is not true

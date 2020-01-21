@@ -1,0 +1,10 @@
+B + C => A 
+D | E => B 
+B => C 
+=D
+?DABCE
+D is true
+A is true
+B is true
+C is true
+E is not true
