@@ -5,5 +5,5 @@ E^A=>F
 =ABE
 ?CF
 
-#C is true
-#F is true
+# Solution C = 1
+# Solution F = 1

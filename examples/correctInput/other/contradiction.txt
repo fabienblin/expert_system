@@ -4,4 +4,4 @@ A=>!B
 ?A
 
 #no solutio
-# solution A = 0
+# solution A = False

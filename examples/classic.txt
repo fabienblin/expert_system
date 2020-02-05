@@ -5,10 +5,10 @@ M=>!N
 =ABEFIJM
 ?CDGHKLN
 
-# solution C = -2
-# solution D = -2
-# solution G = 1
-# solution H = 1
-# solution K = -2
-# solution L = -2
-# solution N = 0
+# solution C = Unknown
+# solution D = Unknown
+# solution G = True
+# solution H = True
+# solution K = Unknown
+# solution L = Unknown
+# solution N = False

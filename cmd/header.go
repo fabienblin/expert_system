@@ -1,15 +1,15 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   header.go                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/30 17:52:04 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/11 02:03:30 by jmonneri         ###   ########.fr       */
-/*                                                                            */
+/*                                                          LE - /            */
+/*                                                              /             */
+/*   header.go                                        .::    .:/ .      .::   */
+/*                                                 +:+:+   +:    +:  +:+:+    */
+/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*                                                 #+#   #+    #+    #+#      */
+/*   Created: 2019/10/30 17:52:04 by jmonneri     #+#   ##    ##    #+#       */
+/*   Updated: 2020/01/22 01:18:56 by jojomoon    ###    #+. /#+    ###.fr     */
+/*                                                         /                  */
+/*                                                        /                   */
 /* ************************************************************************** */
-
 package main
 
 const (
@@ -25,10 +25,10 @@ const (
 	factSymbol  string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	factDeclar  string = "="
 	queryDeclar string = "?"
-	trueF       int    = 1
-	falseF      int    = 0
+	trueF       int    = 2
+	falseF      int    = 1
+	unknownF    int    = 0
 	defaultF    int    = -1
-	unknownF    int    = -2
 )
 
 var verbose bool = false
@@ -67,6 +67,7 @@ type fact struct {
 	op      string
 	isKnown bool
 	value   int
+	fixed		bool
 }
 
 var env struct {
@@ -102,4 +103,10 @@ func init() {
 		imp: impFuncFor,
 		ioi: ioiFuncFor,
 	}
+}
+
+var output = [3]string {
+	"Undetermined",
+	"False",
+	"True",
 }

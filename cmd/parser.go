@@ -1,15 +1,15 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.go                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/30 17:52:26 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/11 01:45:02 by jmonneri         ###   ########.fr       */
-/*                                                                            */
+/*                                                          LE - /            */
+/*                                                              /             */
+/*   parser.go                                        .::    .:/ .      .::   */
+/*                                                 +:+:+   +:    +:  +:+:+    */
+/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*                                                 #+#   #+    #+    #+#      */
+/*   Created: 2019/10/30 17:52:26 by jmonneri     #+#   ##    ##    #+#       */
+/*   Updated: 2020/01/22 11:25:02 by jojomoon    ###    #+. /#+    ###.fr     */
+/*                                                         /                  */
+/*                                                        /                   */
 /* ************************************************************************** */
-
 package main
 
 import (
@@ -126,11 +126,11 @@ func initAllFacts() {
 	for _, f := range env.queries {
 		if _, ok := env.factList[string(f)]; !ok {
 			env.factList[string(f)] = newFact()
-		} else {
-			env.factList[string(f)].op = string(f)
-			env.factList[string(f)].isKnown = false
-			env.factList[string(f)].value = defaultF
 		}
+		env.factList[string(f)].op = string(f)
+		env.factList[string(f)].isKnown = false
+		env.factList[string(f)].value = defaultF
+		env.factList[string(f)].fixed = false
 	}
 
 	// list from statement facts
@@ -143,6 +143,7 @@ func initAllFacts() {
 				env.factList[string(f)].op = string(f)
 				env.factList[string(f)].isKnown = false
 				env.factList[string(f)].value = defaultF
+				env.factList[string(f)].fixed = false
 			}
 		}
 	}
@@ -150,14 +151,11 @@ func initAllFacts() {
 	// list from initial facts
 	for _, f := range env.initialFacts {
 		if _, ok := env.factList[string(f)]; !ok {
-			//env.factList[string(f)] = newFact()
-			fmt.Printf("Warning : can't init unknown fact %q.\n", f)
-		} else {
-			env.factList[string(f)].op = string(f)
-			env.factList[string(f)].isKnown = true
-			env.factList[string(f)].value = trueF
+			env.factList[string(f)] = newFact()
 		}
-
+		env.factList[string(f)].op = string(f)
+		env.factList[string(f)].isKnown = true
+		env.factList[string(f)].value = trueF
+		env.factList[string(f)].fixed = true
 	}
-
 }

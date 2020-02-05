@@ -1,8 +1,0 @@
-A + C <=> G
-P | X => G
-V => X + Y
-V ^ Z <=> B + I
-U => !Z + I
-
-=BUBU
-?CUCU

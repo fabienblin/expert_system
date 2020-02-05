@@ -1,15 +1,15 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.go                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/30 17:52:29 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/10 19:21:04 by jmonneri         ###   ########.fr       */
-/*                                                                            */
+/*                                                          LE - /            */
+/*                                                              /             */
+/*   utils.go                                         .::    .:/ .      .::   */
+/*                                                 +:+:+   +:    +:  +:+:+    */
+/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*                                                 #+#   #+    #+    #+#      */
+/*   Created: 2019/10/30 17:52:29 by jmonneri     #+#   ##    ##    #+#       */
+/*   Updated: 2020/01/22 12:20:04 by jojomoon    ###    #+. /#+    ###.fr     */
+/*                                                         /                  */
+/*                                                        /                   */
 /* ************************************************************************** */
-
 package main
 
 import (
@@ -55,11 +55,21 @@ func printNode(node *infTree, indent int, factCibled *infTree) {
 	}
 	if factCibled == node {
 		fmt.Printf("\033[2m%v\033[0m\n", node.fact.op)
-	} else {
+	} else if node.fact != nil {
 		if node.fact.value == trueF {
-			fmt.Printf("\033[32m")
+			if node.fact.fixed {
+				fmt.Printf("\033[32m")
+			} else {
+				fmt.Printf("\033[2;49;32m")
+			}
 		} else if node.fact.value == falseF {
-			fmt.Printf("\033[31m")
+			if node.fact.fixed {
+				fmt.Printf("\033[31m")
+			} else {
+				fmt.Printf("\033[2;49;31m")
+			}
+		} else if node.fact.value == unknownF {
+			fmt.Printf("\033[33m")
 		}
 		fmt.Printf("%v\033[0m\n", node.fact.op)
 	}
@@ -70,24 +80,28 @@ func getNode(node *infTree, indent int, factCibled *infTree) string {
 	if node == nil {
 		return ""
 	}
-	var ret = getNode(node.right, indent+4, factCibled)
+	var ret = getNode(node.right, indent + 4, factCibled)
 
 	for i := 0; i < indent; i++ {
 		ret += " "
 	}
 	if factCibled == node {
-		ret += "\033[34m" + node.fact.op + "\033[0m\n"
+		ret += "\033[1;49;"
+	} else if !node.fact.fixed && node.fact.value != unknownF{
+		ret += "\033[2;49;"
 	} else {
-		if node.fact.value == trueF {
-			ret += "\033[32m"
-		} else if node.fact.value == falseF {
-			ret += "\033[31m"
-		}
-		ret += node.fact.op + "\n"
-		if node.fact.isKnown {
-			ret += "\033[0m"
-		}
+		ret += "\033[0;49;"
 	}
+	if node.fact.value == trueF {
+		ret += "32m"
+	} else if node.fact.value == falseF {
+		ret += "31m"
+	} else if node.fact.value == unknownF {
+		ret += "33m"
+	} else {
+		ret += "0m"
+	}
+	ret += node.fact.op + "\033[0m\n"
 	return ret + getNode(node.left, indent+4, factCibled)
 }
 
@@ -135,4 +149,11 @@ func getContextRule(node *infTree) string {
 		return "In the rule:\n" + getNode(node, 2, nil) + "\n"
 	}
 	return getContextRule(node.head)
+}
+
+func getContextRule2(node *infTree) string {
+	if node.fact.op == imp || node.fact.op == ioi {
+		return getNode(node, 2, nil)
+	}
+	return getContextRule2(node.head)
 }

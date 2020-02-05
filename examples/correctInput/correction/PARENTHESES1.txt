@@ -4,4 +4,4 @@ A | B + C => E
 =
 ?E
 
-# solution E = 0
+# solution E = False

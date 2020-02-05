@@ -1,0 +1,9 @@
+!A => B
+!C => D
+
+=AE
+?BDF
+
+# solution B = False
+# solution D = True
+# solution F = False

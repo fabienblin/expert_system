@@ -1,6 +1,0 @@
-A => !(C | E)
-!D => C + E
-=AB
-?CE
-C is undetermined
-E is undetermined

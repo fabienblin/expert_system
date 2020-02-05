@@ -5,9 +5,9 @@ I|J<=>K|L
 =ABEFIK
 ?CDGHJL
 
-# solution C = 1
-# solution D = 1
-# solution G = -2
-# solution H = -2
-# solution J = -2
-# solution L = -2
+# solution C = True
+# solution D = True
+# solution G = Unknown
+# solution H = Unknown
+# solution J = Unknown
+# solution L = Unknown

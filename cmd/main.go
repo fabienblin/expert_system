@@ -1,18 +1,19 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.go                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/30 17:52:16 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/11 01:51:20 by jmonneri         ###   ########.fr       */
-/*                                                                            */
+/*                                                          LE - /            */
+/*                                                              /             */
+/*   main.go                                          .::    .:/ .      .::   */
+/*                                                 +:+:+   +:    +:  +:+:+    */
+/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*                                                 #+#   #+    #+    #+#      */
+/*   Created: 2019/10/30 17:52:16 by jmonneri     #+#   ##    ##    #+#       */
+/*   Updated: 2020/01/22 11:25:02 by jojomoon    ###    #+. /#+    ###.fr     */
+/*                                                         /                  */
+/*                                                        /                   */
 /* ************************************************************************** */
-
 package main
 
 import (
+	"fmt"
 	"flag"
 	"log"
 	"os"
@@ -42,7 +43,9 @@ func main() {
 			initAllFacts()
 			buildTree()
 
-			printNode(env.tree, 4, nil)
+			if verbose {
+				printNode(env.tree, 4, nil)
+			}
 			engine(*flagForward)
 		}
 	} else if len(args) == 1 { // file ruleset
@@ -53,7 +56,9 @@ func main() {
 		initAllFacts()
 		buildTree()
 
-		printNode(env.tree, 4, nil)
+		if verbose {
+			fmt.Println(getNode(env.tree, 4, nil))
+		}
 		engine(*flagForward)
 	} else { // error
 		log.Fatal("\nUsage: ./bin/expert_system [OPTIONS] [FILE]\n[OPTIONS]: -v = verbose mode ; -f = forward chaining mode\n[FILE]: if not represented, start dynamic mode")

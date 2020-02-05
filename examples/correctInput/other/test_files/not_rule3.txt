@@ -1,0 +1,5 @@
+B + !C => A
+# solution A = False
+
+=C
+?A

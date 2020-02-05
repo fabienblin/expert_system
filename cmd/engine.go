@@ -1,15 +1,15 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   engine.go                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/30 17:51:53 by jmonneri          #+#    #+#             */
-/*   Updated: 2020/01/11 02:17:18 by jmonneri         ###   ########.fr       */
-/*                                                                            */
+/*                                                          LE - /            */
+/*                                                              /             */
+/*   engine.go                                        .::    .:/ .      .::   */
+/*                                                 +:+:+   +:    +:  +:+:+    */
+/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*                                                 #+#   #+    #+    #+#      */
+/*   Created: 2019/10/30 17:51:53 by jmonneri     #+#   ##    ##    #+#       */
+/*   Updated: 2020/02/05 17:19:07 by jojomoon    ###    #+. /#+    ###.fr     */
+/*                                                         /                  */
+/*                                                        /                   */
 /* ************************************************************************** */
-
 package main
 
 import (
@@ -33,9 +33,13 @@ func engine(flagForward bool) {
 		for _, query := range env.queries {
 			if err := backwardChaining(env.factList[query], []string{}); err != nil {
 				fmt.Println(err)
+			} else {
+				fmt.Printf("# solution %s = %s\n", env.factList[query].op, output[env.factList[query].value])
 			}
-			fmt.Printf("# solution %s = %d\n", env.factList[query].op, env.factList[query].value)
 		}
+	}
+	if verbose {
+		fmt.Printf(getNode(env.tree, 4, nil))
 	}
 }
 
@@ -47,45 +51,50 @@ func backwardChaining(query *fact, checked []string) error {
 	checked = append(checked, query.op)
 	// On trouve les règles définissant la query
 	if verbose {
-		fmt.Printf("Searching for queries defining %s\n", query.op)
+		fmt.Printf("Searching for rules defining %s\n", query.op)
 	}
 	for _, rule := range env.trees {
-		if node := digInRule(query, rule); node != nil {
-			if verbose {
-				fmt.Printf("Rule found:\n")
-				printNode(rule, 4, nil)
-			}
-			err := resolve(node, node, checked)
-			if err != nil {
-				return err
-			}
+		if err := digInRule(query, rule, checked); err != nil {
+			return err
 		}
 	}
 	if query.value == defaultF {
+		if verbose {
+			fmt.Printf("Set %s to false by default: not enought information\n", query.op)
+		}
 		query.value = falseF
 		query.isKnown = true
+		query.fixed = false
+	}
+	if verbose {
+		fmt.Printf("Stop searching %s\n", query.op)
 	}
 	return nil
 }
 
-func digInRule(fact *fact, node *infTree) *infTree {
+func digInRule(fact *fact, node *infTree, checked []string) error {
 	if strings.Contains(factSymbol, node.fact.op) {
 		if node.fact == fact {
-			return node
+			if verbose {
+				fmt.Printf("Rule found for %s searched:\n%s", fact.op, getContextRule2(node))
+			}
+			if err := resolve(node, node, checked); err != nil {
+				return err
+			}
 		}
 		return nil
 	}
 	if node.fact.op != imp && node.left != nil {
-		if node := digInRule(fact, node.left); node != nil {
-			return node
+		if err := digInRule(fact, node.left, checked); err != nil {
+			return err
 		}
 	}
-	return digInRule(fact, node.right)
+	return digInRule(fact, node.right, checked)
 }
 
 func resolve(node *infTree, from *infTree, checked []string) error {
 	var err error = nil
-	if node == nil || node.fact.isKnown {
+	if node == nil{
 		return nil
 	}
 	if from != node.head && !(node.fact.op == imp || node.fact.op == ioi) {
@@ -111,4 +120,26 @@ func resolve(node *infTree, from *infTree, checked []string) error {
 	}
 	// On lance la fonction de l'operateur
 	return opeFunc[node.fact.op](node, from, checked)
+}
+
+func consequensesRelaunch() error {
+	for _, fact := range env.factList {
+		if fact.isKnown && !fact.fixed {
+			if err := backwardChaining(fact, []string{}); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func seekForOtherSide(node *infTree, checked []string) (bool, error) {
+	var otherSide *infTree = getOtherSide(node.head, node)
+	if err := resolve(otherSide, node.head, checked); err != nil {
+		return false, err
+	}
+ 	if otherSide.fact.isKnown {
+		return true, opeFunc[node.head.fact.op](node.head, node, checked)
+	}
+	return false, nil
 }

@@ -3,4 +3,4 @@ B + !C => A
 =
 ?A
 
-# solution A = 0
+# solution A = False

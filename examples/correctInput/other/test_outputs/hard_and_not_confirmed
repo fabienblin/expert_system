@@ -1,5 +1,0 @@
-B => C + D
-!(H ^ G) => !(F + C)
-=AB
-?C
-C is true

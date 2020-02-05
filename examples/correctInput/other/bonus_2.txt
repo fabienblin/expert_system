@@ -5,8 +5,8 @@ D | E => F
 =A
 ?FBCDE
 
-# solution F = 0
-# solution B = 0
-# solution C = 0
-# solution D = -2
-# solution E = -2
+# solution F = False
+# solution B = False
+# solution C = False
+# solution D = Undetermined
+# solution E = Undetermined

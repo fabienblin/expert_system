@@ -1,7 +1,0 @@
-A => B
-B => C
-C => E
-E => A
-=A
-?E
-# solution E = 1

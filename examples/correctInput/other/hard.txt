@@ -1,9 +1,0 @@
-A+B=>C
-C|E=>F
-E^A=>F
-
-=ABE
-?CF
-
-# solution C = 1
-# solution F = 1

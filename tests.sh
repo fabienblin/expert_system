@@ -5,9 +5,9 @@ IFS=$' ' read -r -a FILETAB <<< "$FILES"
 for elem in "${FILETAB[@]}"
 do
 	echo ---------------------
+	echo "$elem"
 	PROGRAM=$(make tests correctInput/$elem | grep solution)
 	SOLUTION=$(cat examples/correctInput/$elem | grep solution)
-	echo "$elem"
 	echo $PROGRAM
 	echo $SOLUTION
 	if [ "$SOLUTION" = "$PROGRAM" ]; then
@@ -17,7 +17,4 @@ do
 	fi;
 done
 
-# RESULT=
-
-#echo "$RESULT"
 

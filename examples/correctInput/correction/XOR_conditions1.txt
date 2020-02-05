@@ -5,4 +5,4 @@ B => C
 =
 ?A
 
-# solution A = 0
+# solution A = False

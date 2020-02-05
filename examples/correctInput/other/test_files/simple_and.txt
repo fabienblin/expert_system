@@ -1,0 +1,6 @@
+A + B => C
+
+=AB
+?C
+
+# solution C = True

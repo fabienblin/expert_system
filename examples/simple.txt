@@ -7,7 +7,7 @@ G^H=>I
 ?CFIK
 
 
-# solution C = 1
-# solution F = 1
-# solution I = 0
-# solution K = 0
+# solution C = True
+# solution F = True
+# solution I = False
+# solution K = False

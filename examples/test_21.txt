@@ -9,6 +9,6 @@ O<=>!O
 =
 ?KPO
 
-# solution K = 0
-# solution P = -1
-# solution O = -1
+# solution K = False
+# solution P = False
+# solution O = False
