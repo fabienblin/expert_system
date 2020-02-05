@@ -6,7 +6,7 @@
 /*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/11 14:34:50 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/02/05 16:19:37 by jojomoon    ###    #+. /#+    ###.fr     */
+/*   Updated: 2020/02/05 18:36:41 by jojomoon    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -19,7 +19,7 @@ import (
 
 func setToTrueF(node *infTree, toPrint string, fixed bool) error {
 	var err error = nil
-	if node.fact.value == falseF && ((fixed && node.fact.fixed) || (!fixed && !node.fact.fixed)) {
+	if node.fact.value == falseF && ((fixed && node.fact.fixed) || (!fixed && !node.fact.fixed) || (!fixed && node.fact.fixed)) {
 		return errors.New("Error: Contradiction in the facts")
 	} else if !node.fact.isKnown || (fixed && !node.fact.fixed) {
 		if verbose {
@@ -37,7 +37,7 @@ func setToTrueF(node *infTree, toPrint string, fixed bool) error {
 
 func setToFalseF(node *infTree, toPrint string, fixed bool) error {
 	var err error = nil
-	if node.fact.value == trueF && ((fixed && node.fact.fixed) || (!fixed && !node.fact.fixed)) {
+	if node.fact.value == trueF && ((fixed && node.fact.fixed) || (!fixed && !node.fact.fixed) || (!fixed && node.fact.fixed)) {
 		return errors.New("Error: Contradiction in the facts")
 	} else if !node.fact.isKnown  || (fixed && !node.fact.fixed) {
 		if verbose {
@@ -165,7 +165,7 @@ func xorFunc(node *infTree, from *infTree, checked []string) error {
 
 	if from == node.head {
 		if leftFact.isKnown && (leftFact.value == rightFact.value) {
-			return setToFalseF(node, getContextRule(node)+"We know that "+nodeToStr(node.left)+" are both of the same value so "+nodeToStr(node)+" is false", leftFact.fixed && rightFact.fixed)
+			return setToFalseF(node, getContextRule(node)+"We know that "+nodeToStr(node.left)+ " and " + nodeToStr(node.right) + " are both of the same value so "+nodeToStr(node)+" is false", leftFact.fixed && rightFact.fixed)
 		} else if leftFact.isKnown && rightFact.isKnown {
 			return setToTrueF(node, getContextRule(node)+"We know that "+nodeToStr(getTrue(node.left, node.right))+" is true and "+nodeToStr(getFalse(node.left, node.right))+" is false so "+nodeToStr(node)+" is true", leftFact.fixed && rightFact.fixed)
 		}
