@@ -1,13 +1,13 @@
 #!/bin/bash
 
-FILES=$(find examples/correctInput -name "*.txt" | cut -d "/" -f 3- | tr "\n" " ")
+FILES=$(find examples/ -name "*.txt" | cut -d "/" -f 3- | tr "\n" " ")
 IFS=$' ' read -r -a FILETAB <<< "$FILES"
 for elem in "${FILETAB[@]}"
 do
 	echo ---------------------
 	echo "$elem"
-	PROGRAM=$(make tests correctInput/$elem | grep solution)
-	SOLUTION=$(cat examples/correctInput/$elem | grep solution)
+	PROGRAM=$(make tests $elem | grep solution)
+	SOLUTION=$(cat examples/$elem | grep solution)
 	echo $PROGRAM
 	echo $SOLUTION
 	if [ "$SOLUTION" = "$PROGRAM" ]; then
