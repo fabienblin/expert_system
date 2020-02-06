@@ -1,0 +1,7 @@
+B => C + D
+!(H ^ G) => B ^ C
+
+=AB
+?C
+
+# solution C = Error : contradiction for the fact C

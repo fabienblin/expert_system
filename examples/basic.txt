@@ -1,8 +1,0 @@
-# poc
-
-A => B
-
-= A
-? B
-
-# solution A = True

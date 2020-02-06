@@ -1,6 +1,0 @@
-B + !C => A
-
-=BC
-?A
-
-# solution A = False

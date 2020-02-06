@@ -1,5 +1,0 @@
-B + !C => A
-# solution A = False
-
-=BC
-?A

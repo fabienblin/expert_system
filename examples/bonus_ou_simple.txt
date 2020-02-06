@@ -1,9 +1,0 @@
-A=>B|C
-B|C|G=>D
-=A
-?DBCG
-
-# solution D = True
-# solution B = Unknown
-# solution C = Unknown
-# solution G = Unknown
