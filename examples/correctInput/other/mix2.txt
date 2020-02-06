@@ -1,6 +1,6 @@
-!A ^ !A | A | !A + A=> C
+!A ^ !A | A | !A + A => C
 
 =A
 ?C
 
-# solution C = True
+# solution C = False
