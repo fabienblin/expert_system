@@ -6,7 +6,7 @@
 /*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/11 14:34:50 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/02/05 23:57:27 by jojomoon    ###    #+. /#+    ###.fr     */
+/*   Updated: 2020/02/06 03:19:41 by jojomoon    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -19,6 +19,9 @@ import (
 
 func setToTrueF(node *infTree, toPrint string, fixed bool) error {
 	var err error = nil
+	if node.fact.value == errorF {
+		return errors.New("Error : There was already a contradiction for the fact " + node.fact.op)
+	}
 	if node.fact.value == falseF && ((fixed && node.fact.fixed) || (!fixed && !node.fact.fixed) || (!fixed && node.fact.fixed)) {
 		node.fact.value = errorF
 		node.fact.fixed = true
@@ -40,6 +43,9 @@ func setToTrueF(node *infTree, toPrint string, fixed bool) error {
 
 func setToFalseF(node *infTree, toPrint string, fixed bool) error {
 	var err error = nil
+	if node.fact.value == errorF {
+		return errors.New("Error : There was already a contradiction for the fact " + node.fact.op)
+	}
 	if node.fact.value == trueF && ((fixed && node.fact.fixed) || (!fixed && !node.fact.fixed) || (!fixed && node.fact.fixed)) {
 		node.fact.value = errorF
 		node.fact.fixed = true
@@ -155,11 +161,19 @@ func orFunc(node *infTree, from *infTree, checked []string) error {
 			} else if leftFact.value == trueF || rightFact.value == trueF {
 				return nil
 			}
-			setToUnknownF(node.left, getContextRule(node)+"We know that "+nodeToStr(node)+" is true but we don't know anyting for childs so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked)
-			setToUnknownF(node.right, getContextRule(node)+"We know that "+nodeToStr(node)+" is true but we don't know anyting for childs so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked)
+			if err := setToUnknownF(node.left, getContextRule(node)+"We know that "+nodeToStr(node)+" is true but we don't know anyting for childs so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked); err != nil {
+				return err
+			}
+			if err := setToUnknownF(node.right, getContextRule(node)+"We know that "+nodeToStr(node)+" is true but we don't know anyting for childs so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked); err != nil {
+				return err
+			}
 		} else if node.fact.value == unknownF {
-			setToUnknownF(node.left, getContextRule(node)+"We know that "+nodeToStr(node)+" is undetermined so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked)
-			setToUnknownF(node.right, getContextRule(node)+"We know that "+nodeToStr(node)+" is undetermined so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked)
+			if err := setToUnknownF(node.left, getContextRule(node)+"We know that "+nodeToStr(node)+" is undetermined so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked); err != nil {
+				return err
+			}
+			if err := setToUnknownF(node.right, getContextRule(node)+"We know that "+nodeToStr(node)+" is undetermined so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
@@ -168,7 +182,6 @@ func orFunc(node *infTree, from *infTree, checked []string) error {
 func xorFunc(node *infTree, from *infTree, checked []string) error {
 	leftFact := node.left.fact
 	rightFact := node.right.fact
-
 	if from == node.head {
 		if leftFact.isKnown && (leftFact.value == rightFact.value) {
 			return setToFalseF(node, getContextRule(node)+"We know that "+nodeToStr(node.left)+ " and " + nodeToStr(node.right) + " are both of the same value so "+nodeToStr(node)+" is false", leftFact.fixed && rightFact.fixed)
@@ -186,10 +199,15 @@ func xorFunc(node *infTree, from *infTree, checked []string) error {
 				if rightFact.value == falseF {
 					return setToTrueF(node.left, getContextRule(node)+"We know that "+nodeToStr(node)+" is true and "+nodeToStr(node.right)+" is false so "+nodeToStr(node.left)+" is true", node.fact.fixed && rightFact.fixed)
 				}
-				return setToFalseF(node.left, getContextRule(node)+"We know that "+nodeToStr(node)+" is true and "+nodeToStr(node.left)+" is true so "+nodeToStr(node.right)+" is false", node.fact.fixed && rightFact.fixed)
+				return setToFalseF(node.left, getContextRule(node)+"We know that "+nodeToStr(node)+" is true and "+nodeToStr(node.right)+" is true so "+nodeToStr(node.left)+" is false", node.fact.fixed && rightFact.fixed)
 			}
-			setToUnknownF(node.left, getContextRule(node)+"We know that "+nodeToStr(node)+" is true but we don't know anyting for childs so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked)
-			setToUnknownF(node.right, getContextRule(node)+"We know that "+nodeToStr(node)+" is true but we don't know anyting for childs so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked)
+			if err := setToUnknownF(node.left, getContextRule(node)+"We know that "+nodeToStr(node)+" is true but we don't know anyting for childs so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked); err != nil {
+				return err
+			}
+			if err := setToUnknownF(node.right, getContextRule(node)+"We know that "+nodeToStr(node)+" is true but we don't know anyting for childs so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked); err != nil {
+				return err
+			}
+
 		} else if node.fact.value == falseF {
 			if leftFact.isKnown {
 				if leftFact.value == falseF {
@@ -202,8 +220,12 @@ func xorFunc(node *infTree, from *infTree, checked []string) error {
 				}
 				return setToTrueF(node.left, getContextRule(node)+"We know that "+nodeToStr(node)+" is false and "+nodeToStr(node.right)+" is true so "+nodeToStr(node.left)+" is true", node.fact.fixed && rightFact.fixed)
 			}
-			setToUnknownF(node.left, getContextRule(node)+"We know that "+nodeToStr(node)+" is false but we don't know anyting for childs so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked)
-			setToUnknownF(node.right, getContextRule(node)+"We know that "+nodeToStr(node)+" is false but we don't know anyting for childs so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked)
+			if err := setToUnknownF(node.left, getContextRule(node)+"We know that "+nodeToStr(node)+" is false but we don't know anyting for childs so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked); err != nil {
+				return err
+			}
+			if err := setToUnknownF(node.right, getContextRule(node)+"We know that "+nodeToStr(node)+" is false but we don't know anyting for childs so "+nodeToStr(node.left)+" and "+nodeToStr(node.right)+" are undetermined", checked); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
@@ -226,6 +248,11 @@ func ioiFunc(node *infTree, from *infTree, checked []string) error {
 	leftFact := node.left.fact
 	rightFact := node.right.fact
 
+	if !to.fact.isKnown {
+		if err := resolve(to, node, checked); err != nil {
+			return err
+		}
+	}
 	if leftFact.fixed {
 		if leftFact.isKnown {
 			if leftFact.value == trueF {
@@ -239,11 +266,6 @@ func ioiFunc(node *infTree, from *infTree, checked []string) error {
 				return setToTrueF(node.left, "We know that "+nodeToStr(node.right)+" is true so "+nodeToStr(node.left)+" is true", true)
 			}
 			return setToFalseF(node.left, "We know that "+nodeToStr(node.right)+" is false so "+nodeToStr(node.left)+" is false", true)
-		}
-	}
-	if !to.fact.isKnown {
-		if err := resolve(to, node, checked); err != nil {
-			return err
 		}
 	}
 	if to.fact.value == falseF {
