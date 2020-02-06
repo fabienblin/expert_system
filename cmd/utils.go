@@ -6,7 +6,7 @@
 /*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 17:52:29 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/01/22 12:20:04 by jojomoon    ###    #+. /#+    ###.fr     */
+/*   Updated: 2020/02/05 23:42:08 by jojomoon    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -98,6 +98,8 @@ func getNode(node *infTree, indent int, factCibled *infTree) string {
 		ret += "31m"
 	} else if node.fact.value == unknownF {
 		ret += "33m"
+	} else if node.fact.value == errorF {
+		ret += "95m"
 	} else {
 		ret += "0m"
 	}

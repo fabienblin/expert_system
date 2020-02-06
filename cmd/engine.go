@@ -6,13 +6,14 @@
 /*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 17:51:53 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/02/05 17:19:07 by jojomoon    ###    #+. /#+    ###.fr     */
+/*   Updated: 2020/02/06 01:17:05 by jojomoon    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 package main
-
+// Stocker dans le node (pas dans le fact) un "checked" que l'on vérifie au moment où l'on passe dessus au lieu de vérifier le checked déjà présent. De plus, en écrasant, il faut faire péter une erreur si on est dans un imp et continuer d'écraser si on est dans un ioi
 import (
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -32,7 +33,7 @@ func engine(flagForward bool) {
 	} else {
 		for _, query := range env.queries {
 			if err := backwardChaining(env.factList[query], []string{}); err != nil {
-				fmt.Println(err)
+				fmt.Printf("# solution %s = %s\n", env.factList[query].op, err)
 			} else {
 				fmt.Printf("# solution %s = %s\n", env.factList[query].op, output[env.factList[query].value])
 			}
@@ -79,6 +80,8 @@ func digInRule(fact *fact, node *infTree, checked []string) error {
 				fmt.Printf("Rule found for %s searched:\n%s", fact.op, getContextRule2(node))
 			}
 			if err := resolve(node, node, checked); err != nil {
+				node.fact.value = errorF
+				node.fact.isKnown = false
 				return err
 			}
 		}
@@ -96,6 +99,9 @@ func resolve(node *infTree, from *infTree, checked []string) error {
 	var err error = nil
 	if node == nil{
 		return nil
+	}
+	if node.fact.value == errorF {
+		return errors.New("Error : There was already a contradiction for the fact " + node.fact.op)
 	}
 	if from != node.head && !(node.fact.op == imp || node.fact.op == ioi) {
 		err = resolve(node.head, node, checked)

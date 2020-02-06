@@ -6,7 +6,7 @@
 /*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 17:52:04 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/01/22 01:18:56 by jojomoon    ###    #+. /#+    ###.fr     */
+/*   Updated: 2020/02/06 00:14:20 by jojomoon    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -29,6 +29,7 @@ const (
 	falseF      int    = 1
 	unknownF    int    = 0
 	defaultF    int    = -1
+	errorF			int		 = -2
 )
 
 var verbose bool = false

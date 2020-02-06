@@ -6,7 +6,7 @@
 /*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/11 14:34:50 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/02/05 18:36:41 by jojomoon    ###    #+. /#+    ###.fr     */
+/*   Updated: 2020/02/05 23:57:27 by jojomoon    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -20,7 +20,10 @@ import (
 func setToTrueF(node *infTree, toPrint string, fixed bool) error {
 	var err error = nil
 	if node.fact.value == falseF && ((fixed && node.fact.fixed) || (!fixed && !node.fact.fixed) || (!fixed && node.fact.fixed)) {
-		return errors.New("Error: Contradiction in the facts")
+		node.fact.value = errorF
+		node.fact.fixed = true
+		node.fact.isKnown = false
+		return errors.New("Error : Contradiction for the fact " + node.fact.op)
 	} else if !node.fact.isKnown || (fixed && !node.fact.fixed) {
 		if verbose {
 			fmt.Println(toPrint)
@@ -38,7 +41,10 @@ func setToTrueF(node *infTree, toPrint string, fixed bool) error {
 func setToFalseF(node *infTree, toPrint string, fixed bool) error {
 	var err error = nil
 	if node.fact.value == trueF && ((fixed && node.fact.fixed) || (!fixed && !node.fact.fixed) || (!fixed && node.fact.fixed)) {
-		return errors.New("Error: Contradiction in the facts")
+		node.fact.value = errorF
+		node.fact.fixed = true
+		node.fact.isKnown = false
+		return errors.New("Error : Contradiction for the fact " + node.fact.op)
 	} else if !node.fact.isKnown  || (fixed && !node.fact.fixed) {
 		if verbose {
 			fmt.Println(toPrint)
