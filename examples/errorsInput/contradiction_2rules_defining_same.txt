@@ -5,5 +5,5 @@ E ^ A => F
 =ABE
 ?CF
 
-# soltuion C = True
-# solution F = Error : Contradiction for the fact F
+# solution C = True
+# solution F = True

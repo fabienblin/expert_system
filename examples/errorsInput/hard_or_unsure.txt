@@ -5,4 +5,4 @@ A => !(C | E)
 ?CE
 
 # solution C = Error : Contradiction for the fact C
-# solution E = Error : Contradiction for the fact E
+# solution E = Error : There was already a contradiction for the fact C

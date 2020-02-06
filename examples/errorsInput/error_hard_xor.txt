@@ -4,4 +4,4 @@ B => C + D
 =AB
 ?C
 
-# solution C = Error : contradiction for the fact C
+# solution C = Error : Contradiction for the fact C

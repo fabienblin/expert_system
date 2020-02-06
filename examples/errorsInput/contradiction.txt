@@ -4,4 +4,4 @@ A => !C
 =AB
 ?C
 
- solution B = Error : Contradiction for the fact C
+# solution C = Error : Contradiction for the fact C
