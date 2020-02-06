@@ -14,5 +14,6 @@ A + B     <=> !C
 ?GVX
 
 # solution G = True
-# solution V = False
-# solution X = False
+# solution V = Error : Contradiction for the fact C
+# solution X = Error : There was already a contradiction for the fact V
+
