@@ -1,15 +1,15 @@
 /* ************************************************************************** */
-/*                                                          LE - /            */
-/*                                                              /             */
-/*   header.go                                        .::    .:/ .      .::   */
-/*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
-/*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/10/30 17:52:04 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/02/06 00:14:20 by jojomoon    ###    #+. /#+    ###.fr     */
-/*                                                         /                  */
-/*                                                        /                   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   header.go                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/30 17:52:04 by jmonneri          #+#    #+#             */
+/*   Updated: 2020/02/07 06:11:02 by jmonneri         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
+
 package main
 
 const (
@@ -29,7 +29,7 @@ const (
 	falseF      int    = 1
 	unknownF    int    = 0
 	defaultF    int    = -1
-	errorF			int		 = -2
+	errorF      int    = -2
 )
 
 var verbose bool = false
@@ -68,7 +68,7 @@ type fact struct {
 	op      string
 	isKnown bool
 	value   int
-	fixed		bool
+	fixed   bool
 }
 
 var env struct {
@@ -106,7 +106,7 @@ func init() {
 	}
 }
 
-var output = [3]string {
+var output = [3]string{
 	"Undetermined",
 	"False",
 	"True",

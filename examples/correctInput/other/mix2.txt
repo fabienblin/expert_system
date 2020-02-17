@@ -1,6 +1,8 @@
-!A ^ !A | A | !A + A => C
+!A ^ ((!A | A) | (!A + A)) => C
+!B ^ ((!B | B) | (!B + B)) => D
 
 =A
-?C
+?CD
 
-# solution C = False
+# solution C = True
+# solution D = False
