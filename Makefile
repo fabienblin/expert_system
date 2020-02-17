@@ -1,15 +1,15 @@
 # **************************************************************************** #
-#                                                           LE - /             #
-#                                                               /              #
-#    Makefile                                         .::    .:/ .      .::    #
-#                                                  +:+:+   +:    +:  +:+:+     #
-#    By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+      #
-#                                                  #+#   #+    #+    #+#       #
-#    Created: 2019/10/30 17:57:13 by jmonneri     #+#   ##    ##    #+#        #
-#    Updated: 2020/01/21 13:40:31 by jojomoon    ###    #+. /#+    ###.fr      #
-#                                                          /                   #
-#                                                         /                    #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/10/30 17:57:13 by jmonneri          #+#    #+#              #
+#    Updated: 2020/02/17 15:44:01 by jmonneri         ###   ########.fr        #
+#                                                                              #
 # **************************************************************************** #
+
 .PHONY: all get install run fclean tests
 
 GONAME = expert_system
@@ -19,7 +19,17 @@ TEST_FILE = other/corr1.txt
 GOPATH = $(shell pwd)
 GOBIN = $(GOPATH)/bin
 GOENV = GOPATH=$(GOPATH) GOBIN=$(GOBIN)  
-GOFILES = $(wildcard cmd/*.go)
+FILES = engine.go\
+		forwardChaining.go\
+		header.go\
+		infTree.go\
+		lexer.go\
+		main.go\
+		opeFuncForward.go\
+		opeFuncs.go\
+		parser.go\
+		utils.go
+GOFILES = $(addprefix cmd/, $(FILES))
 EXECPATH = ./bin/$(GONAME)
 
 all: $(EXECPATH)
@@ -57,3 +67,5 @@ fclean:
 	@echo "Cleaning"
 	@$(GOENV) go clean
 	@rm -rf ./bin/
+
+re: fclean all
