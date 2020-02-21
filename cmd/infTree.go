@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                          LE - /            */
+/*                                                              /             */
+/*   infTree.go                                       .::    .:/ .      .::   */
+/*                                                 +:+:+   +:    +:  +:+:+    */
+/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*                                                 #+#   #+    #+    #+#      */
+/*   Created: 2019/10/30 17:52:09 by jmonneri     #+#   ##    ##    #+#       */
+/*   Updated: 2020/01/21 22:55:03 by jojomoon    ###    #+. /#+    ###.fr     */
+/*                                                         /                  */
+/*                                                        /                   */
+/* ************************************************************************** */
 package main
 
 import (
@@ -25,8 +37,9 @@ func newInfTree() *infTree {
 func newFact() *fact {
 	var f fact
 	f.op = ""
+	f.value = defaultF
 	f.isKnown = false
-	f.isTrue = false
+	f.fixed = false
 	return &f
 }
 
@@ -36,7 +49,7 @@ func newFact() *fact {
  */
 func buildTree() {
 	var root *infTree
-
+	
 	// set env.trees
 	for _, rule := range env.rules {
 		root = newInfTree()
@@ -44,7 +57,7 @@ func buildTree() {
 		var current = root
 		for i := 0; i < len(rule); i++ {
 			if rule[i] != ' ' && rule[i] != '\t' {
-				if i+3 < len(rule) && rule[i:i+3] == ioi {
+				if i + 3 < len(rule) && rule[i:i+3] == ioi {
 					current = buildLeaf(root, current, ioi)
 					i += 2
 				} else if i+2 < len(rule) && rule[i:i+2] == imp {
@@ -68,7 +81,7 @@ func buildTree() {
 		var jointInfTree = newInfTree()
 		var jointFact = newFact()
 		jointInfTree.fact = jointFact
-		jointFact.op = "&"
+		jointFact.op = "+"
 
 		jointInfTree.left = t
 		jointInfTree.left.head = jointInfTree
@@ -131,7 +144,7 @@ func insertNodeItem(current *infTree, item infTree, info nodeInfo) *infTree {
 	var node *infTree
 
 	if info != skipClimbUp {
-		if info != rightAssociative {
+		if info != rightAssociative && item.fact.op != not {
 			for current.precedence >= item.precedence {
 				current = current.head
 			}

@@ -1,0 +1,8 @@
+!A ^ ((!A | A) | (!A + A)) => C
+!B ^ ((!B | B) | (!B + B)) => D
+
+=A
+?CD
+
+# solution C = True
+# solution D = False

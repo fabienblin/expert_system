@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                          LE - /            */
+/*                                                              /             */
+/*   parser.go                                        .::    .:/ .      .::   */
+/*                                                 +:+:+   +:    +:  +:+:+    */
+/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*                                                 #+#   #+    #+    #+#      */
+/*   Created: 2019/10/30 17:52:26 by jmonneri     #+#   ##    ##    #+#       */
+/*   Updated: 2020/01/22 11:25:02 by jojomoon    ###    #+. /#+    ###.fr     */
+/*                                                         /                  */
+/*                                                        /                   */
+/* ************************************************************************** */
 package main
 
 import (
@@ -59,7 +71,6 @@ func parseDynamic() {
 	var line string
 
 	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Printf("Using dynamic mode. \nPlease write the rules followed by initial facts then your query.\nType 'exit' to stop.\nType 'run' to run inference engine.\n")
 	for scanner.Scan() {
 		line = scanner.Text()
 		if line == "exit" {
@@ -76,6 +87,9 @@ func parseDynamic() {
 	if !(env.initialFacts != nil && env.queries != nil && env.rules != nil) {
 		fmt.Printf("Warning : Incomplete data from input.\n")
 	}
+
+	initAllFacts()
+	buildTree()
 }
 
 /*
@@ -115,7 +129,8 @@ func initAllFacts() {
 		}
 		env.factList[string(f)].op = string(f)
 		env.factList[string(f)].isKnown = false
-		env.factList[string(f)].isTrue = false
+		env.factList[string(f)].value = defaultF
+		env.factList[string(f)].fixed = false
 	}
 
 	// list from statement facts
@@ -127,7 +142,8 @@ func initAllFacts() {
 				}
 				env.factList[string(f)].op = string(f)
 				env.factList[string(f)].isKnown = false
-				env.factList[string(f)].isTrue = false
+				env.factList[string(f)].value = defaultF
+				env.factList[string(f)].fixed = false
 			}
 		}
 	}
@@ -139,6 +155,7 @@ func initAllFacts() {
 		}
 		env.factList[string(f)].op = string(f)
 		env.factList[string(f)].isKnown = true
-		env.factList[string(f)].isTrue = true
+		env.factList[string(f)].value = trueF
+		env.factList[string(f)].fixed = true
 	}
 }

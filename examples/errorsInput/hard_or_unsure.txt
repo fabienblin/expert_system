@@ -1,0 +1,8 @@
+A => !(C | E)
+!D => C + E
+
+=A
+?CE
+
+# solution C = Error : Contradiction for the fact C
+# solution E = Error : There was already a contradiction for the fact C
