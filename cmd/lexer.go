@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                          LE - /            */
+/*                                                              /             */
+/*   lexer.go                                         .::    .:/ .      .::   */
+/*                                                 +:+:+   +:    +:  +:+:+    */
+/*   By: fablin <fablin@student.le-101.fr>          +:+   +:    +:    +:+     */
+/*                                                 #+#   #+    #+    #+#      */
+/*   Created: 2019/10/30 17:52:13 by jmonneri     #+#   ##    ##    #+#       */
+/*   Updated: 2020/02/21 14:24:26 by fablin      ###    #+. /#+    ###.fr     */
+/*                                                         /                  */
+/*                                                        /                   */
+/* ************************************************************************** */
 package main
 
 import (
@@ -90,20 +102,19 @@ func ruleLexer(line string) {
 	// Check each symbol is followed by a legal symbol
 	for i := 0; i < len(line)-1; i++ {
 		// for open bracket
-		if string(line[i]) == openBra && !charInString(rune(line[i+1]), closeBra+factSymbol+not) {
+		if string(line[i]) == openBra && !charInString(rune(line[i+1]), closeBra+factSymbol+not+openBra) {
 			log.Fatalf("Rule contains illegal character '%c' after '%c'.\n", line[i+1], line[i])
 			os.Exit(1)
 		}
 
 		// for close bracket
-		if string(line[i]) == closeBra && !charInString(rune(line[i+1]), and+or+xor+imp+ioi) {
-
+		if string(line[i]) == closeBra && !charInString(rune(line[i+1]), and+or+xor+imp+ioi+closeBra) {
 			log.Fatalf("Rule contains illegal character '%c' after '%c'.\n", line[i+1], line[i])
 			os.Exit(1)
 		}
 
 		// for not
-		if string(line[i]) == not && !charInString(rune(line[i+1]), openBra+factSymbol) {
+		if string(line[i]) == not && !charInString(rune(line[i+1]), openBra+factSymbol+not) {
 			log.Fatalf("Rule contains illegal character '%c' after '%c'.\n", line[i+1], line[i])
 			os.Exit(1)
 		}

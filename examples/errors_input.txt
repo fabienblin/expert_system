@@ -1,9 +1,0 @@
-a + B + )C <=> !Z(
-
-!G + H => Z #COM
-
-A ^ !G => Z
-
-=ABG
-
-?GVX
