@@ -87,10 +87,7 @@ func backwardInfer(current *infTree, query string, implies bool, depend bool) {
 				current.fact.isKnown = true
 				current.fact.isTrue = current.right.fact.isTrue || current.left.fact.isTrue
 			}
-		} else {
-
 		}
-		return
 	} else {
 		if implies {
 			if _, ok := env.factList[current.fact.op]; ok { // current is a fact
@@ -113,9 +110,7 @@ func backwardInfer(current *infTree, query string, implies bool, depend bool) {
 				backwardInfer(current.right, query, true, depend)
 			}
 		}
-		return
 	}
-	return
 }
 
 /*

@@ -76,7 +76,13 @@ func ruleLexer(line string) {
 	// Check rule is divided left and right for imp and ioi symbols
 	splitImp := strings.Split(line, imp)
 	splitIoi := strings.Split(line, ioi)
-	if len(splitImp) != 2 && len(splitIoi) != 2 {
+	var split []string
+	if len(splitImp) == 2 && len(splitIoi) == 1 {
+		split = splitImp
+	} else if len(splitIoi) == 2 && len(splitImp) == 2 {
+		split = splitIoi
+	}
+	if !(len(split) == 2 && len(split[0]) != 0 && len(split[1]) != 0) {
 		log.Fatal("Rule doesn't respect syntax around => or <=> symbol.\n")
 		os.Exit(1)
 	}
@@ -91,6 +97,7 @@ func ruleLexer(line string) {
 
 		// for close bracket
 		if string(line[i]) == closeBra && !charInString(rune(line[i+1]), and+or+xor+imp+ioi) {
+
 			log.Fatalf("Rule contains illegal character '%c' after '%c'.\n", line[i+1], line[i])
 			os.Exit(1)
 		}
