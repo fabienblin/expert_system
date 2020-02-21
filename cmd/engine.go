@@ -6,7 +6,7 @@
 /*   By: fablin <fablin@student.le-101.fr>          +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 17:51:53 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/02/21 14:15:22 by fablin      ###    #+. /#+    ###.fr     */
+/*   Updated: 2020/02/21 14:33:54 by fablin      ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -50,63 +50,6 @@ func backwardChaining(query *fact, checked []string) error {
 	if stringInSlice(query.op, checked) {
 		return nil
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-	// fmt.Printf("backward current = %v\timplies = %v\tdepend=%v\n", current.fact.op, implies, depend)
-	if depend {
-		if implies { // (2) go to head
-			if current.fact.op != ioi && current.fact.op != imp { // loop to head and propagate isTrue to query fact
-				backwardInfer(current.head, query, implies, depend)
-				// (3) define right side
-				if current.fact.isKnown == false && current.head.fact.isKnown == true {
-					if _, ok := env.factList[current.fact.op]; ok { // define queried fact
-						current.fact.isTrue = current.head.fact.isTrue
-						current.fact.isKnown = current.head.fact.isKnown
-					} else if and == current.fact.op { // current is a +
-						current.fact.isTrue = current.head.fact.isTrue
-						current.fact.isKnown = current.head.fact.isKnown
-					} else if or == current.fact.op { // current is a |
-						current.fact.isTrue = current.head.fact.isTrue
-						current.fact.isKnown = current.head.fact.isKnown
-					} else if xor == current.fact.op { // current is a ^
-						current.fact.isTrue = current.head.fact.isTrue
-						current.fact.isKnown = current.head.fact.isKnown
-					} else if not == current.fact.op { // current is a !
-						current.fact.isTrue = !current.head.fact.isTrue
-						current.fact.isKnown = current.head.fact.isKnown
-					}
-				} else if _, ok := env.factList[current.fact.op]; ok && current.fact.isKnown == true && current.head.fact.isKnown == true && current.head.fact.isTrue == false {
-					log.Printf("Paradox in fact definition of %v\n", current.fact.op)
-					// os.Exit(1)
-				}
-			} else { // (2.1 and 2.2) if => or <=>
-				if current.fact.op == imp {
-					forwardInfer(current, false)
-				} else if current.fact.op == ioi {
-					forwardInfer(current.right, false)
-					forwardInfer(current.left, false)
-				}
-				current.fact.isKnown = true
-				current.fact.isTrue = current.right.fact.isTrue || current.left.fact.isTrue
-			}
-<<<<<<< HEAD
-		}
-	} else {
-		if implies {
-			if _, ok := env.factList[current.fact.op]; ok { // current is a fact
-				if current.fact.op == query { // current is query
-					backwardInfer(current, query, implies, true) // (1.1)
-				}
-			} else {
-				backwardInfer(current.right, query, implies, depend)
-				backwardInfer(current.left, query, implies, depend)
-=======
-		} else {
-
-=======
-=======
->>>>>>> master
 	checked = append(checked, query.op)
 	// On trouve les règles définissant la query
 	if verbose {
@@ -136,7 +79,6 @@ func digInRule(fact *fact, node *infTree, checked []string) error {
 		if node.fact == fact {
 			if verbose {
 				fmt.Printf("Rule found for %s searched:\n%s", fact.op, getContextRule2(node))
->>>>>>> master
 			}
 			if err := resolve(node, node, checked); err != nil {
 				node.fact.value = errorF
@@ -144,9 +86,6 @@ func digInRule(fact *fact, node *infTree, checked []string) error {
 				return err
 			}
 		}
-<<<<<<< HEAD
-	}
-=======
 		return nil
 	}
 	if node.fact.op != imp && node.left != nil {
@@ -155,7 +94,6 @@ func digInRule(fact *fact, node *infTree, checked []string) error {
 		}
 	}
 	return digInRule(fact, node.right, checked)
->>>>>>> master
 }
 
 func resolve(node *infTree, from *infTree, checked []string) error {
