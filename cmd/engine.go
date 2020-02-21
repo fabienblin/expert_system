@@ -6,16 +6,16 @@
 /*   By: fablin <fablin@student.le-101.fr>          +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 17:51:53 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/02/21 14:12:35 by fablin      ###    #+. /#+    ###.fr     */
+/*   Updated: 2020/02/21 14:15:22 by fablin      ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 package main
+
 // Stocker dans le node (pas dans le fact) un "checked" que l'on vérifie au moment où l'on passe dessus au lieu de vérifier le checked déjà présent. De plus, en écrasant, il faut faire péter une erreur si on est dans un imp et continuer d'écraser si on est dans un ioi
 import (
 	"errors"
 	"fmt"
-	"log"
 	"strings"
 )
 
@@ -50,48 +50,6 @@ func backwardChaining(query *fact, checked []string) error {
 	if stringInSlice(query.op, checked) {
 		return nil
 	}
-<<<<<<< HEAD
-
-	// fmt.Printf("backward current = %v\timplies = %v\tdepend=%v\n", current.fact.op, implies, depend)
-	if depend {
-		if implies { // (2) go to head
-			if current.fact.op != ioi && current.fact.op != imp { // loop to head and propagate isTrue to query fact
-				backwardInfer(current.head, query, implies, depend)
-				// (3) define right side
-				if current.fact.isKnown == false && current.head.fact.isKnown == true {
-					if _, ok := env.factList[current.fact.op]; ok { // define queried fact
-						current.fact.isTrue = current.head.fact.isTrue
-						current.fact.isKnown = current.head.fact.isKnown
-					} else if and == current.fact.op { // current is a +
-						current.fact.isTrue = current.head.fact.isTrue
-						current.fact.isKnown = current.head.fact.isKnown
-					} else if or == current.fact.op { // current is a |
-						current.fact.isTrue = current.head.fact.isTrue
-						current.fact.isKnown = current.head.fact.isKnown
-					} else if xor == current.fact.op { // current is a ^
-						current.fact.isTrue = current.head.fact.isTrue
-						current.fact.isKnown = current.head.fact.isKnown
-					} else if not == current.fact.op { // current is a !
-						current.fact.isTrue = !current.head.fact.isTrue
-						current.fact.isKnown = current.head.fact.isKnown
-					}
-				} else if _, ok := env.factList[current.fact.op]; ok && current.fact.isKnown == true && current.head.fact.isKnown == true && current.head.fact.isTrue == false {
-					log.Printf("Paradox in fact definition of %v\n", current.fact.op)
-					// os.Exit(1)
-				}
-			} else { // (2.1 and 2.2) if => or <=>
-				if current.fact.op == imp {
-					forwardInfer(current, false)
-				} else if current.fact.op == ioi {
-					forwardInfer(current.right, false)
-					forwardInfer(current.left, false)
-				}
-				current.fact.isKnown = true
-				current.fact.isTrue = current.right.fact.isTrue || current.left.fact.isTrue
-			}
-		} else {
-
-=======
 	checked = append(checked, query.op)
 	// On trouve les règles définissant la query
 	if verbose {
@@ -100,7 +58,6 @@ func backwardChaining(query *fact, checked []string) error {
 	for _, rule := range env.trees {
 		if err := digInRule(query, rule, checked); err != nil {
 			return err
->>>>>>> a3141c1340f428b7417537b69dc99d328e70032e
 		}
 	}
 	if query.value == defaultF {
@@ -139,86 +96,9 @@ func digInRule(fact *fact, node *infTree, checked []string) error {
 	return digInRule(fact, node.right, checked)
 }
 
-<<<<<<< HEAD
-/*
- * INCOMPLETE
- * Forward inference engine
- * Args : current starts on root node, implies is true on right side of =>
- * When implies is true, information is infered from head node
- */
-func forwardInfer(current *infTree, implies bool) {
-	if current == nil {
-		return
-	}
-	// fmt.Printf("forward current = %v\timplies = %v\n", current.fact.op, implies)
-	if implies {
-		if _, ok := env.factList[current.fact.op]; ok { // current is a fact
-			if current.fact.isKnown == false && current.head.fact.isKnown == true {
-				current.fact.isTrue = current.head.fact.isTrue
-				current.fact.isKnown = current.head.fact.isKnown
-			} else if _, ok := env.factList[current.fact.op]; ok && current.fact.isKnown == true && current.head.fact.isKnown == true && current.head.fact.isTrue == false {
-				log.Printf("Paradox in fact definition of %v\n", current.fact.op)
-				// os.Exit(1)
-			}
-		} else if and == current.fact.op { // current is a +
-			current.fact.isTrue = current.head.fact.isTrue
-			current.fact.isKnown = current.head.fact.isKnown
-			forwardInfer(current.right, implies)
-			forwardInfer(current.left, implies)
-		} else if or == current.fact.op { // current is a |
-			current.fact.isTrue = current.head.fact.isTrue
-			current.fact.isKnown = false
-			forwardInfer(current.right, implies)
-			forwardInfer(current.left, implies)
-		} else if xor == current.fact.op { // current is a ^
-			current.fact.isTrue = current.head.fact.isTrue
-			current.fact.isKnown = false
-			forwardInfer(current.right, implies)
-			forwardInfer(current.left, implies)
-		} else if not == current.fact.op { // current is a !
-			current.fact.isTrue = !current.head.fact.isTrue
-			current.fact.isKnown = current.head.fact.isKnown
-			forwardInfer(current.right, implies)
-		} else if ioi == current.fact.op { // current is a <=>
-			forwardInfer(current.right, implies)
-			forwardInfer(current.left, implies)
-		} else if imp == current.fact.op { // current is a =>
-			forwardInfer(current.left, implies)
-		}
-	} else {
-		if and == current.fact.op { // current is a +
-			forwardInfer(current.right, implies)
-			forwardInfer(current.left, implies)
-			current.fact.isTrue = current.left.fact.isTrue && current.right.fact.isTrue
-			current.fact.isKnown = current.right.fact.isKnown && current.left.fact.isKnown
-		} else if or == current.fact.op { // current is a |
-			forwardInfer(current.right, implies)
-			forwardInfer(current.left, implies)
-			current.fact.isTrue = current.left.fact.isTrue || current.right.fact.isTrue
-			current.fact.isKnown = current.right.fact.isKnown && current.left.fact.isKnown
-		} else if xor == current.fact.op { // current is a ^
-			forwardInfer(current.right, implies)
-			forwardInfer(current.left, implies)
-			current.fact.isTrue = current.left.fact.isTrue != current.right.fact.isTrue
-			current.fact.isKnown = current.right.fact.isKnown && current.left.fact.isKnown
-		} else if not == current.fact.op { // current is a !
-			forwardInfer(current.right, implies)
-			current.fact.isTrue = !current.right.fact.isTrue
-			current.fact.isKnown = current.right.fact.isKnown
-		} else if ioi == current.fact.op { // current is a <=>
-			forwardInfer(current.left, implies)
-			forwardInfer(current.right, implies)
-		} else if imp == current.fact.op { // current is a =>
-			forwardInfer(current.left, implies)
-			current.fact.isTrue = current.left.fact.isTrue
-			current.fact.isKnown = current.left.fact.isKnown
-		} else if "&" == current.fact.op { // current is a joint &
-			forwardInfer(current.right, implies)
-			forwardInfer(current.left, implies)
-=======
 func resolve(node *infTree, from *infTree, checked []string) error {
 	var err error = nil
-	if node == nil{
+	if node == nil {
 		return nil
 	}
 	if node.fact.value == errorF {
@@ -233,7 +113,6 @@ func resolve(node *infTree, from *infTree, checked []string) error {
 	if strings.Contains(factSymbol, node.fact.op) {
 		if !node.fact.isKnown {
 			return backwardChaining(node.fact, checked)
->>>>>>> a3141c1340f428b7417537b69dc99d328e70032e
 		}
 		return nil
 	}
@@ -266,7 +145,7 @@ func seekForOtherSide(node *infTree, checked []string) (bool, error) {
 	if err := resolve(otherSide, node.head, checked); err != nil {
 		return false, err
 	}
- 	if otherSide.fact.isKnown {
+	if otherSide.fact.isKnown {
 		return true, opeFunc[node.head.fact.op](node.head, node, checked)
 	}
 	return false, nil
