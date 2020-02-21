@@ -3,18 +3,18 @@
 /*                                                              /             */
 /*   main.go                                          .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*   By: fablin <fablin@student.le-101.fr>          +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 17:52:16 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/01/22 11:25:02 by jojomoon    ###    #+. /#+    ###.fr     */
+/*   Updated: 2020/02/21 14:57:03 by fablin      ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 package main
 
 import (
-	"fmt"
 	"flag"
+	"fmt"
 	"log"
 	"os"
 )
@@ -23,6 +23,7 @@ func initEnv() {
 	env.factList = make(map[string]*fact)
 	env.initialFacts = nil
 	env.trees = nil
+	env.tree = nil
 }
 
 // flags f et v boolens
@@ -36,7 +37,9 @@ func main() {
 	verbose = *flagVerbose
 	args := flag.Args()
 	if len(args) == 0 { // dynamic ruleset
+		fmt.Printf("Using dynamic mode. \nPlease write the rules followed by initial facts then your query.\nType 'exit' to stop.\nType 'run' to run inference engine.\n")
 		for {
+			fmt.Printf("You may redefine known facts to retry the query.\n")
 			initEnv()
 			parseDynamic()
 

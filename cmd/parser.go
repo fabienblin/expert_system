@@ -3,10 +3,10 @@
 /*                                                              /             */
 /*   parser.go                                        .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*   By: fablin <fablin@student.le-101.fr>          +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 17:52:26 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/01/22 11:25:02 by jojomoon    ###    #+. /#+    ###.fr     */
+/*   Updated: 2020/02/21 14:59:12 by fablin      ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -87,9 +87,6 @@ func parseDynamic() {
 	if !(env.initialFacts != nil && env.queries != nil && env.rules != nil) {
 		fmt.Printf("Warning : Incomplete data from input.\n")
 	}
-
-	initAllFacts()
-	buildTree()
 }
 
 /*

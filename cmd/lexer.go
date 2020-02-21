@@ -3,10 +3,10 @@
 /*                                                              /             */
 /*   lexer.go                                         .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*   By: fablin <fablin@student.le-101.fr>          +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 17:52:13 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/01/21 16:42:12 by jojomoon    ###    #+. /#+    ###.fr     */
+/*   Updated: 2020/02/21 14:30:40 by fablin      ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -88,7 +88,13 @@ func ruleLexer(line string) {
 	// Check rule is divided left and right for imp and ioi symbols
 	splitImp := strings.Split(line, imp)
 	splitIoi := strings.Split(line, ioi)
-	if len(splitImp) != 2 && len(splitIoi) != 2 {
+	var split []string
+	if len(splitImp) == 2 && len(splitIoi) == 1 {
+		split = splitImp
+	} else if len(splitIoi) == 2 && len(splitImp) == 2 {
+		split = splitIoi
+	}
+	if !(len(split) == 2 && len(split[0]) != 0 && len(split[1]) != 0) {
 		log.Fatal("Rule doesn't respect syntax around => or <=> symbol.\n")
 		os.Exit(1)
 	}

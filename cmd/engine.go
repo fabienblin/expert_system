@@ -3,14 +3,15 @@
 /*                                                              /             */
 /*   engine.go                                        .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: jojomoon <jojomoon@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*   By: fablin <fablin@student.le-101.fr>          +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 17:51:53 by jmonneri     #+#   ##    ##    #+#       */
-/*   Updated: 2020/02/06 01:17:05 by jojomoon    ###    #+. /#+    ###.fr     */
+/*   Updated: 2020/02/21 14:38:39 by fablin      ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 package main
+
 // Stocker dans le node (pas dans le fact) un "checked" que l'on vérifie au moment où l'on passe dessus au lieu de vérifier le checked déjà présent. De plus, en écrasant, il faut faire péter une erreur si on est dans un imp et continuer d'écraser si on est dans un ioi
 import (
 	"errors"
@@ -97,7 +98,7 @@ func digInRule(fact *fact, node *infTree, checked []string) error {
 
 func resolve(node *infTree, from *infTree, checked []string) error {
 	var err error = nil
-	if node == nil{
+	if node == nil {
 		return nil
 	}
 	if node.fact.value == errorF {
@@ -144,7 +145,7 @@ func seekForOtherSide(node *infTree, checked []string) (bool, error) {
 	if err := resolve(otherSide, node.head, checked); err != nil {
 		return false, err
 	}
- 	if otherSide.fact.isKnown {
+	if otherSide.fact.isKnown {
 		return true, opeFunc[node.head.fact.op](node.head, node, checked)
 	}
 	return false, nil
