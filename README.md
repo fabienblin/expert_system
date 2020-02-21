@@ -55,5 +55,4 @@ facts : [A-Z]
 # Authors
 
 * **Fabien Blin** @ 42 Lyon
-* **Kevin Azoulay** @ 42 Lyon
 * **Johann Monnerie** @ 42 Lyon

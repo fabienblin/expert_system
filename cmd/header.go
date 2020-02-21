@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   header.go                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmonneri <jmonneri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/30 17:52:04 by jmonneri          #+#    #+#             */
+/*   Updated: 2020/02/07 06:11:02 by jmonneri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 package main
 
 const (
@@ -13,10 +25,14 @@ const (
 	factSymbol  string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	factDeclar  string = "="
 	queryDeclar string = "?"
-	trueF       int    = 1
-	falseF      int    = 0
-	unknownF    int    = -1
+	trueF       int    = 2
+	falseF      int    = 1
+	unknownF    int    = 0
+	defaultF    int    = -1
+	errorF      int    = -2
 )
+
+var verbose bool = false
 
 type nodeInfo int
 
@@ -50,8 +66,9 @@ type infTree struct {
 
 type fact struct {
 	op      string
-	isTrue  bool
 	isKnown bool
+	value   int
+	fixed   bool
 }
 
 var env struct {
@@ -61,4 +78,36 @@ var env struct {
 	trees        []*infTree
 	factList     map[string]*fact
 	tree         *infTree
+}
+
+var opeFunc map[string]func(*infTree, *infTree, []string) error
+
+func init() {
+	opeFunc = map[string]func(*infTree, *infTree, []string) error{
+		and: andFunc,
+		not: notFunc,
+		xor: xorFunc,
+		or:  orFunc,
+		imp: impFunc,
+		ioi: ioiFunc,
+	}
+}
+
+var opeFuncFor map[string]func(*infTree) (bool, error)
+
+func init() {
+	opeFuncFor = map[string]func(*infTree) (bool, error){
+		and: andFuncFor,
+		not: notFuncFor,
+		xor: xorFuncFor,
+		or:  orFuncFor,
+		imp: impFuncFor,
+		ioi: ioiFuncFor,
+	}
+}
+
+var output = [3]string{
+	"Undetermined",
+	"False",
+	"True",
 }
