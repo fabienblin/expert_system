@@ -12,11 +12,11 @@ Use makefile : make / make run
 
 With a file :
 
-'./bin/expert_system ./examples/example_input.txt'
+`./bin/expert_system ./examples/example_input.txt`
 
 or dynamically :
 
-'./bin/expert_system'
+`./bin/expert_system`
 
 ## input
 
